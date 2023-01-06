@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
+public final class OIConstants {
 	public static final class LogitechController {
 		public static final int yAxis = 1;
 		public static final int xAxis = 0;

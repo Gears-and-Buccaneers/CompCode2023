@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // Constants
-import frc.lib.configs.Constants;
+import frc.lib.configs.OIConstants;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -42,8 +42,8 @@ public class RobotContainer {
 	 */
 	public RobotContainer() {
 		swerve.setDefaultCommand(
-				new TeleopSwerve(swerve, Constants.driver.LT_X, Constants.driver.LT_Y,
-						Constants.driver.RT_X, true, true));
+				new TeleopSwerve(swerve, OIConstants.driver.LT_X, OIConstants.driver.LT_Y,
+						OIConstants.driver.RT_X, true, true));
 
 		// Configure the button bindings
 		configureButtonBindings();
@@ -63,7 +63,7 @@ public class RobotContainer {
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		Constants.driver.BACK.whenPressed(new InstantCommand(swerve::zeroGyro));
+		OIConstants.driver.BACK.whenPressed(new InstantCommand(swerve::zeroGyro));
 	}
 
 	/**
