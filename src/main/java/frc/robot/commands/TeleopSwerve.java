@@ -11,10 +11,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class TeleopSwerve extends CommandBase {
 
-	private double rotation;
-
-	private Translation2d translation;
-
 	private Supplier<Boolean> fieldRelative;
 	private boolean openLoop;
 
@@ -42,8 +38,9 @@ public class TeleopSwerve extends CommandBase {
 
 	@Override
 	public void execute() {
-		translation = new Translation2d(yAxis.get(), xAxis.get()).times(Constants.Swerve.maxSpeed);
-		rotation = rAxis.get() * Constants.Swerve.maxAngularVelocity;
-		swerve.drive(translation, rotation, fieldRelative.get(), openLoop);
+		swerve.drive(
+				new Translation2d(yAxis.get(), xAxis.get()).times(Constants.Swerve.maxSpeed),
+				rAxis.get() * Constants.Swerve.maxAngularVelocity,
+				!fieldRelative.get(), openLoop);
 	}
 }
