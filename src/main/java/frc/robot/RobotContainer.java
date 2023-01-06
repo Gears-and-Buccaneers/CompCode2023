@@ -36,6 +36,7 @@ public class RobotContainer {
 
 	private final Command simpleAuto = null;
 	private final Command complexAuto = new exampleAuto(swerve);
+	// private final Command PathPlannerAuto = new PathPlanerTesting(swerve);
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -50,7 +51,9 @@ public class RobotContainer {
 
 		// setup Autos
 		chooser.setDefaultOption("Simple Auto", simpleAuto);
-		chooser.addOption("Complex Auto", complexAuto);
+		chooser.addOption("Coded Trajectory", complexAuto);
+		// chooser.addOption("PathPlannerAuto", PathPlannerAuto);
+
 		SmartDashboard.putData(chooser);
 	}
 
