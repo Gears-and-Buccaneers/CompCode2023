@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
+import frc.lib.configs.Constants;
 import frc.lib.configs.JoystickAxis;
-import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
