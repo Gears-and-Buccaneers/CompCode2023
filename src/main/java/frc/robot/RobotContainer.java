@@ -23,7 +23,7 @@ import frc.robot.subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-	/** Controlers */
+	/** Controllers */
 	// private final LogitechController driver = new
 	// LogitechController(Constants.driverPort);
 	// private final LogitechController operator = new
@@ -43,7 +43,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		swerve.setDefaultCommand(
 				new TeleopSwerve(swerve, OIConstants.driver.LT_X, OIConstants.driver.LT_Y,
-						OIConstants.driver.RT_X, true, true));
+						OIConstants.driver.RT_X, () -> OIConstants.driver.LB.get(), true));
 
 		// Configure the button bindings
 		configureButtonBindings();

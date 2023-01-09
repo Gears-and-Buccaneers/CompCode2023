@@ -3,16 +3,15 @@ package frc.robot.commands;
 import frc.lib.configs.Constants;
 import frc.lib.util.JoystickAxis;
 import frc.robot.subsystems.Swerve;
+
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class TeleopSwerve extends CommandBase {
 
-	private double rotation;
-
-	private Translation2d translation;
-
-	private boolean fieldRelative;
+	private Supplier<Boolean> fieldRelative;
 	private boolean openLoop;
 
 	private Swerve swerve;
@@ -26,7 +25,7 @@ public class TeleopSwerve extends CommandBase {
 	 */
 	public TeleopSwerve(Swerve swerve, JoystickAxis xAxis,
 			JoystickAxis yAxis, JoystickAxis rAxis,
-			boolean fieldRelative, boolean openLoop) {
+			Supplier<Boolean> fieldRelative, boolean openLoop) {
 		this.swerve = swerve;
 		addRequirements(swerve);
 
@@ -39,8 +38,9 @@ public class TeleopSwerve extends CommandBase {
 
 	@Override
 	public void execute() {
-		translation = new Translation2d(yAxis.get(), xAxis.get()).times(Constants.Swerve.maxSpeed);
-		rotation = rAxis.get() * Constants.Swerve.maxAngularVelocity;
-		swerve.drive(translation, rotation, fieldRelative, openLoop);
+		swerve.drive(
+				new Translation2d(yAxis.get(), xAxis.get()).times(Constants.Swerve.maxSpeed),
+				rAxis.get() * Constants.Swerve.maxAngularVelocity,
+				!fieldRelative.get(), openLoop);
 	}
 }

@@ -4,6 +4,7 @@
 
 package frc.lib.configs;
 
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.lib.util.JoystickAxis;
@@ -43,10 +44,10 @@ public final class OIConstants {
 			LEFT_THUMB = new JoystickButton(joystick, 9);
 			RIGHT_THUMB = new JoystickButton(joystick, 10);
 
-			LT_X = new JoystickAxis(joystick, 0);
-			LT_Y = new JoystickAxis(joystick, 1);
-			RT_X = new JoystickAxis(joystick, 2);
-			RT_Y = new JoystickAxis(joystick, 3);
+			LT_X = new JoystickAxis(joystick, 1);
+			LT_Y = new JoystickAxis(joystick, 2);
+			RT_X = new JoystickAxis(joystick, 5);
+			RT_Y = new JoystickAxis(joystick, 6);
 		}
 	}
 
