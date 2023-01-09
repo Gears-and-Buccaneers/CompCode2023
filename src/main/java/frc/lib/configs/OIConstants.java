@@ -6,6 +6,7 @@ package frc.lib.configs;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.lib.util.JoystickAxis;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide

@@ -1,4 +1,4 @@
-package frc.lib.configs;
+package frc.lib.util;
 
 import java.util.function.Supplier;
 

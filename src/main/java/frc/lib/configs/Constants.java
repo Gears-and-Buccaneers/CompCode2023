@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.lib.configs;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -76,47 +76,13 @@ public final class Constants {
 		/* Angle Encoder Invert */
 		public static final boolean canCoderInvert = false;
 
-		/* Module Specific Constants */
-		/* Front Left Module - Module 0 */
-		public static final class Mod0 {
-			public static final int driveMotorID = 1;
-			public static final int angleMotorID = 2;
-			public static final int canCoderID = 1;
-			public static final double angleOffset = 37.35;
-			public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
-					canCoderID, angleOffset);
-		}
+		public static final SwerveModuleConstants frontLeft = new SwerveModuleConstants(1, 2, 1, 37.35);
 
-		/* Front Right Module - Module 1 */
-		public static final class Mod1 {
-			public static final int driveMotorID = 3;
-			public static final int angleMotorID = 4;
-			public static final int canCoderID = 2;
-			public static final double angleOffset = 10.45;
-			public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
-					canCoderID, angleOffset);
-		}
+		public static final SwerveModuleConstants frontRight = new SwerveModuleConstants(3, 4, 2, 10.45);
 
-		/* Back Left Module - Module 2 */
-		public static final class Mod2 {
-			public static final int driveMotorID = 5;
-			public static final int angleMotorID = 6;
-			public static final int canCoderID = 3;
-			public static final double angleOffset = 38.75;
-			public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
-					canCoderID, angleOffset);
-		}
+		public static final SwerveModuleConstants backLeft = new SwerveModuleConstants(5, 6, 3, 38.75);
 
-		/* Back Right Module - Module 3 */
-		public static final class Mod3 {
-			public static final int driveMotorID = 7;
-			public static final int angleMotorID = 8;
-			public static final int canCoderID = 4;
-			public static final double angleOffset = 58.88;
-			public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
-					canCoderID, angleOffset);
-		}
-
+		public static final SwerveModuleConstants backRight = new SwerveModuleConstants(7, 8, 4, 58.88);
 	}
 
 	public static final class AutoConstants {
