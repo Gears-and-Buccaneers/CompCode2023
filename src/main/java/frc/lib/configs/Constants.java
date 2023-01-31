@@ -74,13 +74,13 @@ public final class Constants {
 		/* Angle Encoder Invert */
 		public static final boolean canCoderInvert = false;
 
-		public static final SwerveModuleConstants frontLeft = new SwerveModuleConstants(1, 2, 1, 37.35);
+		public static final SwerveModuleConstants frontLeft = new SwerveModuleConstants(1, 2, 20, 37.35);
 
-		public static final SwerveModuleConstants frontRight = new SwerveModuleConstants(3, 4, 2, 10.45);
+		public static final SwerveModuleConstants frontRight = new SwerveModuleConstants(3, 4, 21, 10.45);
 
-		public static final SwerveModuleConstants backLeft = new SwerveModuleConstants(5, 6, 3, 38.75);
+		public static final SwerveModuleConstants backLeft = new SwerveModuleConstants(5, 6, 22, 38.75);
 
-		public static final SwerveModuleConstants backRight = new SwerveModuleConstants(7, 8, 4, 58.88);
+		public static final SwerveModuleConstants backRight = new SwerveModuleConstants(7, 8, 23, 58.88);
 	}
 
 	public static final class AutoConstants {
