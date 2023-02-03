@@ -18,8 +18,8 @@ import com.ctre.phoenix.sensors.CANCoder;
 public class SwerveModule {
 	public int moduleNumber;
 	private double angleOffset;
-	private TalonFX mAngleMotor;
-	private TalonFX mDriveMotor;
+	public TalonFX mAngleMotor;
+	public TalonFX mDriveMotor;
 	private CANCoder angleEncoder;
 	private double lastAngle;
 
@@ -104,10 +104,13 @@ public class SwerveModule {
 				Conversions.falconToDegrees(mAngleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
 		return new SwerveModuleState(velocity, angle);
 	}
+
 	public SwerveModulePosition getPos() {
-		//double velocity = Conversions.falconToMPS(mDriveMotor.getSelectedSensorVelocity(),
-				//Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
-		double distanceMeters = Conversions.falconToRPM(mDriveMotor.getSelectedSensorPosition(), Constants.Swerve.driveGearRatio);
+		// double velocity =
+		// Conversions.falconToMPS(mDriveMotor.getSelectedSensorVelocity(),
+		// Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
+		double distanceMeters = Conversions.falconToRPM(mDriveMotor.getSelectedSensorPosition(),
+				Constants.Swerve.driveGearRatio);
 		Rotation2d angle = Rotation2d.fromDegrees(
 				Conversions.falconToDegrees(mAngleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
 		return new SwerveModulePosition(distanceMeters, angle);
