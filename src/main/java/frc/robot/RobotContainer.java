@@ -6,29 +6,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-// Constants
 import frc.lib.configs.OIConstants;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
-	/** Controllers */
-	// private final LogitechController driver = new
-	// LogitechController(Constants.driverPort);
-	// private final LogitechController operator = new
-	// LogitechController(Constants.operatorPort);
-
 	private final Swerve swerve = new Swerve();
 
 	/* Autos */

@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import frc.lib.configs.Constants;
-import frc.lib.configs.JoystickAxis;
+import frc.lib.util.JoystickAxis;
 import frc.robot.subsystems.Swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,7 +22,7 @@ public class TeleopSwerve extends CommandBase {
 	/**
 	 * Driver control
 	 */
-	public TeleopSwerve(Swerve swerve, JoystickAxis xAxis, JoystickAxis yAxis, JoystickAxis rAxis, 
+	public TeleopSwerve(Swerve swerve, JoystickAxis xAxis, JoystickAxis yAxis, JoystickAxis rAxis,
 			JoystickButton fieldRelative, boolean openLoop) {
 		this.swerve = swerve;
 		addRequirements(swerve);

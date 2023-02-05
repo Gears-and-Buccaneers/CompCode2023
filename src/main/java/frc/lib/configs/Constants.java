@@ -8,6 +8,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+
 public final class Constants {
 	public static final class Swerve {
 		public static final int pigeonID = 24;
@@ -32,15 +34,17 @@ public final class Constants {
 				new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
 		/* Swerve Current Limiting */
-		public static final int angleContinuousCurrentLimit = 25;
-		public static final int anglePeakCurrentLimit = 40;
-		public static final double anglePeakCurrentDuration = 0.1;
-		public static final boolean angleEnableCurrentLimit = true;
+		public static final SupplyCurrentLimitConfiguration angleSupplyLimit = new SupplyCurrentLimitConfiguration(
+				true,
+				25,
+				40,
+				0.1);
 
-		public static final int driveContinuousCurrentLimit = 35;
-		public static final int drivePeakCurrentLimit = 60;
-		public static final double drivePeakCurrentDuration = 0.1;
-		public static final boolean driveEnableCurrentLimit = true;
+		public static final SupplyCurrentLimitConfiguration driveSupplyLimit = new SupplyCurrentLimitConfiguration(
+				true,
+				35,
+				60,
+				0.1);
 
 		/* Angle Motor PID Values */
 		public static final double angleKP = 0.6;
@@ -75,33 +79,21 @@ public final class Constants {
 		public static final boolean canCoderInvert = false;
 
 		/* Module Specific Constants */
-		/* Front Left Module - Module 0 */
-		public static final class Mod0 {
-			public static final double angleOffset = 199.0;
-			public static final SwerveModuleConstants constants = new SwerveModuleConstants(1, 5,
-					1, angleOffset, false);
-		}
+		/* Front Left Module - Module 1 */
+		public static final SwerveModuleConstants mod1 = new SwerveModuleConstants(1, 5,
+				1, 199.0, false);
 
-		/* Front Right Module - Module 1 */
-		public static final class Mod1 {
-			public static final double angleOffset = 203.65;
-			public static final SwerveModuleConstants constants = new SwerveModuleConstants(2, 6,
-					2, angleOffset, true);
-		}
+		/* Front Right Module - Module 2 */
+		public static final SwerveModuleConstants mod2 = new SwerveModuleConstants(2, 6,
+				2, 203.65, true);
 
-		/* Back Left Module - Module 2 */
-		public static final class Mod2 {
-			public static final double angleOffset = 8.87;
-			public static final SwerveModuleConstants constants = new SwerveModuleConstants(3, 7,
-					3, angleOffset, false);
-		}
+		/* Back Left Module - Module 3 */
+		public static final SwerveModuleConstants mod3 = new SwerveModuleConstants(3, 7,
+				3, 8.87, false);
 
-		/* Back Right Module - Module 3 */
-		public static final class Mod3 {
-			public static final double angleOffset = 76.40;
-			public static final SwerveModuleConstants constants = new SwerveModuleConstants(4, 8,
-					4, angleOffset, true);
-		}
+		/* Back Right Module - Module 4 */
+		public static final SwerveModuleConstants mod4 = new SwerveModuleConstants(4, 8,
+				4, 76.40, true);
 
 	}
 
