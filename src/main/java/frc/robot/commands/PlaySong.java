@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.lib.configs.Constants;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.SwerveModule;
 
@@ -11,9 +12,9 @@ public class PlaySong extends CommandBase {
 	private Orchestra player = new Orchestra();
 
 	public PlaySong(Swerve swerve, String file) {
-		for (SwerveModule mod : swerve.mSwerveMods) {
-			player.addInstrument(mod.mAngleMotor);
-			player.addInstrument(mod.mDriveMotor);
+		for (SwerveModule mod : Constants.Swerve.mods) {
+			player.addInstrument(mod.angleMotor);
+			player.addInstrument(mod.driveMotor);
 		}
 
 		player.loadMusic(file);

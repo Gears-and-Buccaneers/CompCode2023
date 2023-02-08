@@ -10,8 +10,8 @@ public final class LogitechController {
 
 	private static final double deadband = 0.05;
 
-	public final JoystickButton A, B, X, Y, LB, RB, BACK, START, LEFT_THUMB, RIGHT_THUMB;
-	public final JoystickAxis LT_X, LT_Y, RT_X, RT_Y;
+	public final JoystickButton A, B, X, Y, LB, RB, BACK, START, LT, RT;
+	public final JoystickAxis LS_X, LS_Y, RS_X, RS_Y;
 
 	public LogitechController(int port) {
 		Joystick joystick = new Joystick(port);
@@ -24,12 +24,12 @@ public final class LogitechController {
 		RB = new JoystickButton(joystick, 6);
 		BACK = new JoystickButton(joystick, 7);
 		START = new JoystickButton(joystick, 8);
-		LEFT_THUMB = new JoystickButton(joystick, 9);
-		RIGHT_THUMB = new JoystickButton(joystick, 10);
+		LT = new JoystickButton(joystick, 9);
+		RT = new JoystickButton(joystick, 10);
 
-		LT_X = new JoystickAxis(joystick, 0, deadband);
-		LT_Y = new JoystickAxis(joystick, 1, deadband);
-		RT_X = new JoystickAxis(joystick, 4, deadband);
-		RT_Y = new JoystickAxis(joystick, 5, deadband);
+		LS_X = new JoystickAxis(joystick, 0, deadband);
+		LS_Y = new JoystickAxis(joystick, 1, deadband);
+		RS_X = new JoystickAxis(joystick, 4, deadband);
+		RS_Y = new JoystickAxis(joystick, 5, deadband);
 	}
 }

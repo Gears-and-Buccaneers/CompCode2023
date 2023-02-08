@@ -15,8 +15,8 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import com.pathplanner.lib.auto.PIDConstants;
 
-public class PathPlanerTesting extends SequentialCommandGroup {
-	public PathPlanerTesting(Swerve Swerve) {
+public class PathPlannerTesting extends SequentialCommandGroup {
+	public PathPlannerTesting(Swerve Swerve) {
 
 		// This will load the file "FullAuto.path" and generate it with a max velocity
 		// of 4 m/s and a max acceleration of 3 m/s^2
@@ -39,13 +39,13 @@ public class PathPlanerTesting extends SequentialCommandGroup {
 				Swerve::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
 				Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
 				new PIDConstants(1, 0.0, 0.0), // PID constants to correct for translation error (used to create the X
-												// and Y PID controllers)
+				// and Y PID controllers)
 				new PIDConstants(1, 0.0, 0.0), // PID constants to correct for rotation error (used to create the
-												// rotation controller)
+				// rotation controller)
 				Swerve::setModuleStates, // Module states consumer used to output to the drive subsystem
 				eventMap,
 				Swerve // The drive subsystem. Used to properly set the requirements of path following
-						// commands
+		// commands
 		);
 
 		Command fullAuto = autoBuilder.fullAuto(pathGroup);
