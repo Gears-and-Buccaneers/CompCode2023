@@ -23,10 +23,11 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-		/* swerve.setDefaultCommand( */new TeleopSwerve(swerve)/* ) */;
+		swerve.setDefaultCommand(new TeleopSwerve(swerve));
 
 		// Configure the button bindings
 		Controls.zeroGyro.whileTrue(new InstantCommand(swerve::zeroGyro));
+		Controls.visionTest.whileTrue(new VisionTest(swerve));
 
 		// Setup autos
 		chooser.setDefaultOption("None", null);

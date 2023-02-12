@@ -27,21 +27,22 @@ public class Swerve extends SubsystemBase {
 	}
 
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-		SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(fieldRelative
+		ChassisSpeeds speeds = fieldRelative
 				? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation, getYaw())
-				: new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
-		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
+				: new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
-		for (SwerveModule mod : Constants.Swerve.mods)
-			mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+		setModuleStates(Constants.Swerve.swerveKinematics.toSwerveModuleStates(speeds), isOpenLoop);
 	}
 
-	/* Used by SwerveControllerCommand in Auto */
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
+		setModuleStates(desiredStates, false);
+	}
+
+	public void setModuleStates(SwerveModuleState[] desiredStates, boolean openLoop) {
 		SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
 
 		for (SwerveModule mod : Constants.Swerve.mods)
-			mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+			mod.setDesiredState(desiredStates[mod.moduleNumber], openLoop);
 	}
 
 	public Pose2d getPose() {
@@ -50,13 +51,6 @@ public class Swerve extends SubsystemBase {
 
 	public void resetOdometry(Pose2d pose) {
 		swerveOdometry.resetPosition(getYaw(), getPos(), pose);
-	}
-
-	public SwerveModuleState[] getStates() {
-		SwerveModuleState[] states = new SwerveModuleState[4];
-		for (SwerveModule mod : Constants.Swerve.mods)
-			states[mod.moduleNumber] = mod.getState();
-		return states;
 	}
 
 	public SwerveModulePosition[] getPos() {

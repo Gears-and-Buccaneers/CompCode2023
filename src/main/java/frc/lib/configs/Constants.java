@@ -27,6 +27,13 @@ public final class Constants {
 
 		public static final JoystickButton fieldRelative = driver.LB;
 		public static final JoystickButton zeroGyro = driver.BACK;
+
+		public static final JoystickButton visionTest = driver.X;
+
+	}
+
+	public static final class Vision {
+		public static final String cameraName = "photonvision";
 	}
 
 	/** Swerve Configs */
