@@ -1,5 +1,10 @@
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.net.URI;
+import java.io.IOException;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -11,8 +16,17 @@ import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
+import com.nosolojava.fsm.impl.runtime.basic.BasicStateMachineEngine;
+import com.nosolojava.fsm.impl.runtime.basic.BasicStateMachineFramework;
+import com.nosolojava.fsm.runtime.StateMachineEngine;
+import com.nosolojava.fsm.runtime.Context;
+import com.nosolojava.fsm.model.config.exception.ConfigurationException;
+import com.nosolojava.fsm.parser.exception.SCXMLParserException;
+import com.nosolojava.fsm.parser.XppActionParser;
+
 public class Robot extends TimedRobot {
 	private final Swerve swerve = new Swerve();
+	public Context stateMachineContext;
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -23,6 +37,22 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
+		// Boot up the state machine
+		try {
+			List<XppActionParser> actionParsers = new ArrayList<XppActionParser>();
+			actionParsers.add(new StateMachineActions());
+			BasicStateMachineFramework.DEBUG.set(true);
+			StateMachineEngine engine = new BasicStateMachineEngine(actionParsers);
+			engine.start();
+			stateMachineContext = engine.startFSMSession(URI.create("file:///Users/phrogz/Code/scxmltest/scxmltest/src/main/java/net/phrogz/scxml/test/robot.scxml"));
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SCXMLParserException e) {
+            e.printStackTrace();
+        }
+
 		swerve.setDefaultCommand(new TeleopSwerve(swerve));
 
 		// Configure the button bindings
