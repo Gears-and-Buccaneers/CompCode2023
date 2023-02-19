@@ -7,6 +7,7 @@ import frc.lib.configs.Constants;
 import frc.robot.subsystems.Swerve;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 public class VisionTest extends CommandBase {
 	private final Swerve swerve;
@@ -25,15 +26,13 @@ public class VisionTest extends CommandBase {
 
 	@Override
 	public void execute() {
-		var result = camera.getLatestResult();
+		PhotonPipelineResult result = camera.getLatestResult();
 
 		double speed = 0;
 
-		if (result.hasTargets()) {
+		if (result.hasTargets())
 			speed = -turnController.calculate(result.getBestTarget().getYaw(), 0);
 
-		}
-
-		swerve.drive(new Translation2d(), speed * 0.2, false, Constants.Swerve.openLoop);
+		swerve.drive(new Translation2d(), speed * 0.75, false, Constants.Swerve.openLoop);
 	}
 }

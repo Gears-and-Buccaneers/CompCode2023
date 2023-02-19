@@ -1,12 +1,38 @@
 {
+  "HALProvider": {
+    "RoboRIO": {
+      "6V Rail": {
+        "open": true
+      }
+    },
+    "Timing": {
+      "window": {
+        "visible": false
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/SmartDashboard/SendableChooser[0]": "String Chooser"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "open": true
+      },
+      "SmartDashboard": {
+        "open": true
+      }
     }
   },
   "NetworkTables Info": {
     "Clients": {
+      "open": true
+    },
+    "Connections": {
       "open": true
     },
     "shuffleboard": {

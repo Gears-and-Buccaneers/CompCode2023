@@ -12,13 +12,13 @@ public class TalonConfig extends TalonFXConfiguration {
 
 	public TalonConfig(double kP, double kI, double kD, double kF, boolean invert, NeutralMode neutralMode,
 			SupplyCurrentLimitConfiguration lim) {
-		this.slot0.kP = kP;
-		this.slot0.kI = kI;
-		this.slot0.kD = kD;
-		this.slot0.kF = kF;
+		super.slot0.kP = kP;
+		super.slot0.kI = kI;
+		super.slot0.kD = kD;
+		super.slot0.kF = kF;
 
-		this.supplyCurrLimit = lim;
-		this.initializationStrategy = SensorInitializationStrategy.BootToZero;
+		super.supplyCurrLimit = lim;
+		super.initializationStrategy = SensorInitializationStrategy.BootToZero;
 
 		this.invert = invert;
 		this.neutralMode = neutralMode;
@@ -28,11 +28,11 @@ public class TalonConfig extends TalonFXConfiguration {
 			SupplyCurrentLimitConfiguration lim, double openLoopRamp, double closedloopRamp) {
 		this(kP, kI, kD, kF, invert, neutralMode, lim);
 
-		this.openloopRamp = openLoopRamp;
-		this.closedloopRamp = closedloopRamp;
+		super.openloopRamp = openLoopRamp;
+		super.closedloopRamp = closedloopRamp;
 	}
 
-	public TalonFX create(int deviceNumber, double sensorPosition) {
+	public TalonFX create(int deviceNumber) {
 		TalonFX motor = new TalonFX(deviceNumber);
 
 		motor.configFactoryDefault();
@@ -40,8 +40,6 @@ public class TalonConfig extends TalonFXConfiguration {
 
 		motor.setInverted(invert);
 		motor.setNeutralMode(neutralMode);
-
-		motor.setSelectedSensorPosition(sensorPosition);
 
 		return motor;
 	}
