@@ -42,13 +42,18 @@ public class Swerve extends SubsystemBase {
 			mod.setDesiredState(desiredStates[mod.moduleNumber], openLoop);
 	}
 
-	public void updateAngleMotors() {
-		for (SwerveModule mod : Constants.Swerve.mods)
-			mod.updateAngleMotor();
-	}
+	// public void updateAngleMotors() {
+	// for (SwerveModule mod : Constants.Swerve.mods)
+	// mod.updateAngleMotor();
+	// }
 
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		setModuleStates(desiredStates, false);
+	}
+
+	public void setToCurrent() {
+		for (SwerveModule mod : Constants.Swerve.mods)
+			mod.setToCurrent();
 	}
 
 	public Pose2d getPose() {
@@ -84,7 +89,8 @@ public class Swerve extends SubsystemBase {
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Integrated", mod.getIntegrated());
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Velocity", mod.getVelocity());
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Absolute Position", mod.getAbsolutePosition());
-			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " last angle", mod.lastAngle);
+			// SmartDashboard.putNumber("Mod" + mod.moduleNumber + " last angle",
+			// mod.lastAngle);
 		}
 	}
 }

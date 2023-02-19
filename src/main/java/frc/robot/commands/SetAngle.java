@@ -25,8 +25,4 @@ public class SetAngle extends CommandBase {
 
 		swerve.setModuleStates(states);
 	}
-
-	public boolean isFinished() {
-		return true;
-	}
 }

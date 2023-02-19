@@ -21,7 +21,7 @@ public class SwerveModule {
 	public TalonFX angleMotor;
 	public TalonFX driveMotor;
 	private CANCoder angleEncoder;
-	public double lastAngle;
+	// public double lastAngle;
 	private double angleOffset;
 
 	public SwerveModule(int moduleNumber, int driveMotorID, int angleMotorID, int canCoderID, double angleOffset) {
@@ -38,17 +38,23 @@ public class SwerveModule {
 		/* Drive Motor Config */
 		driveMotor = Constants.Swerve.driveConfig.create(driveMotorID);
 
-		updateAngleMotor();
+		// updateAngleMotor();
 
-		lastAngle = getIntegrated();
+		// lastAngle = getIntegrated();
 	}
 
-	public void updateAngleMotor() {
-		double absolutePosition = Conversions.degreesToFalcon(
-				getAbsolutePosition(),
-				Constants.Swerve.angleGearRatio);
-		angleMotor.setSelectedSensorPosition(absolutePosition);
-		angleMotor.set(ControlMode.Position, absolutePosition);
+	/*
+	 * public void updateAngleMotor() {
+	 * double absolutePosition = Conversions.degreesToFalcon(
+	 * getAbsolutePosition(),
+	 * Constants.Swerve.angleGearRatio);
+	 * angleMotor.setSelectedSensorPosition(absolutePosition);
+	 * angleMotor.set(ControlMode.Position, absolutePosition);
+	 * }
+	 */
+
+	public void setToCurrent() {
+		angleMotor.set(ControlMode.Position, angleMotor.getSelectedSensorPosition());
 	}
 
 	public double getAbsolutePosition() {
@@ -56,7 +62,7 @@ public class SwerveModule {
 	}
 
 	public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-		desiredState = CTREModuleState.optimize(desiredState, Rotation2d.fromDegrees(getIntegrated()));
+		desiredState = CTREModuleState.optimize(desiredState, Rotation2d.fromDegrees(getAbsolutePosition()));
 
 		if (isOpenLoop) {
 			double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
@@ -69,7 +75,7 @@ public class SwerveModule {
 					Constants.Swerve.driveFeedforward.calculate(desiredState.speedMetersPerSecond));
 		}
 
-		double angle = desiredState.angle.getDegrees();
+		double angle = getIntegrated() + (desiredState.angle.getDegrees() - getAbsolutePosition());
 
 		// angle = Math.abs(lastAngle - angle) <= 2 ? lastAngle : angle;
 
@@ -78,7 +84,7 @@ public class SwerveModule {
 		angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle,
 				Constants.Swerve.angleGearRatio));
 
-		lastAngle = angle;
+		// lastAngle = angle;
 	}
 
 	private void configAngleEncoder() {
@@ -111,7 +117,7 @@ public class SwerveModule {
 		double distanceMeters = Conversions.falconToRPM(driveMotor.getSelectedSensorPosition(),
 				Constants.Swerve.driveGearRatio);
 
-		Rotation2d angle = Rotation2d.fromDegrees(getIntegrated());
+		Rotation2d angle = Rotation2d.fromDegrees(getAbsolutePosition());
 
 		return new SwerveModulePosition(distanceMeters, angle);
 	}

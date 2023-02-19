@@ -25,17 +25,17 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-		// swerve.setDefaultCommand(new TeleopSwerve(swerve));
+		swerve.setDefaultCommand(new TeleopSwerve(swerve));
 
 		arm.setDefaultCommand(arm.run(() -> arm.controller.set(ControlMode.PercentOutput, Controls.arm.get())));
 
-		Controls.driver.Y.whileTrue(new SetAngle(swerve, 0));
-		Controls.driver.B.whileTrue(new SetAngle(swerve, 90));
-		Controls.driver.A.whileTrue(new SetAngle(swerve, 180));
-		Controls.driver.X.whileTrue(new SetAngle(swerve, 270));
+		// Controls.driver.Y.whileTrue(new SetAngle(swerve, 0));
+		// Controls.driver.B.whileTrue(new SetAngle(swerve, 90));
+		// Controls.driver.A.whileTrue(new SetAngle(swerve, 180));
+		// Controls.driver.X.whileTrue(new SetAngle(swerve, 270));
 
 		// Configure the button bindings
-		Controls.zeroGyro.whileTrue(swerve.runOnce(swerve::zeroGyro).andThen(swerve.runOnce(swerve::updateAngleMotors)));
+		// Controls.zeroGyro.whileTrue(swerve.runOnce(swerve::zeroGyro).andThen(swerve.runOnce(swerve::updateAngleMotors)));
 		// Controls.visionTest.whileTrue(new VisionTest(swerve));
 
 		// Setup autos
