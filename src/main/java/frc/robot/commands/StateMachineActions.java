@@ -9,9 +9,16 @@ import com.nosolojava.fsm.runtime.Context;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import frc.robot.Robot;
+
 public class StateMachineActions implements XppActionParser {
     private static final String NS = "http://dawsonschool.org/robotics/2972";
+    private Robot robot;
 
+    public StateMachineActions(Robot ownerRobot) {
+        robot = ownerRobot;
+    }
+    
     @Override
 	public String getNamespace() {
 		return NS;
@@ -26,10 +33,11 @@ public class StateMachineActions implements XppActionParser {
                 result = new CustomAction() {
                     @Override
 		            public void run(Context context) {
+                        robot.drivingEnabled = drivingEnabled;
                         if (drivingEnabled) {
-                            System.out.println("Enable Driving!");
+                            System.out.println("...enabled driving");
                         } else {
-                            System.out.println("DISABLE Driving!");
+                            System.out.println("...disabled driving");
                         }
                     }
                 };
@@ -41,6 +49,7 @@ public class StateMachineActions implements XppActionParser {
                 result = new CustomAction() {
                     @Override
 		            public void run(Context context) {
+                        // TODO: tell the robot to control the arm/gripper/boom
                         System.out.println("Should "+(open ? "open/raise" : "close/lower")+" "+piece);
                     }
                 };
@@ -51,6 +60,7 @@ public class StateMachineActions implements XppActionParser {
                 result = new CustomAction() {
                     @Override
                     public void run(Context context) {
+                        // TODO: make the robot do the right kind of magic
                         System.out.println("Time to start doing magic: "+magicKind);
                     }
                 };
@@ -60,6 +70,7 @@ public class StateMachineActions implements XppActionParser {
                 result = new CustomAction() {
                     @Override
                     public void run(Context context) {
+                        // TODO: tell the robot to calibrate
                         System.out.println("Time to calibrate!");
                     }
                 };

@@ -27,6 +27,7 @@ import com.nosolojava.fsm.parser.XppActionParser;
 public class Robot extends TimedRobot {
 	private final Swerve swerve = new Swerve();
 	public Context stateMachineContext;
+	public Boolean drivingEnabled = false;
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -40,7 +41,7 @@ public class Robot extends TimedRobot {
 		// Boot up the state machine
 		try {
 			List<XppActionParser> actionParsers = new ArrayList<XppActionParser>();
-			actionParsers.add(new StateMachineActions());
+			actionParsers.add(new StateMachineActions(this));
 			BasicStateMachineFramework.DEBUG.set(true);
 			StateMachineEngine engine = new BasicStateMachineEngine(actionParsers);
 			engine.start();
