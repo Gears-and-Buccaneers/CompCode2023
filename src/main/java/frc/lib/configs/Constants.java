@@ -7,6 +7,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.lib.util.JoystickAxis;
 import frc.lib.util.LogitechController;
@@ -21,19 +23,7 @@ public final class Constants {
 	/** Robot Controls */
 	public static final class Controls {
 		public static final LogitechController driver = new LogitechController(0);
-		static final LogitechController operator = new LogitechController(1);
-
-		public static final JoystickAxis xAxis = driver.LS_X;
-		public static final JoystickAxis yAxis = driver.LS_Y;
-		public static final JoystickAxis rAxis = driver.RS_X;
-
-		public static final JoystickAxis arm = driver.RS_Y;
-
-		public static final JoystickButton fieldRelative = driver.LB;
-		public static final JoystickButton zeroGyro = driver.BACK;
-
-		public static final JoystickButton visionTest = driver.X;
-
+		public static final LogitechController operator = new LogitechController(1);
 	}
 
 	public static final class Vision {
@@ -69,7 +59,8 @@ public final class Constants {
 				0.27 / 12);
 
 		/* Swerve Profiling Values */
-		public static final double maxSpeed = 4.5; // meters per second
+		public static final double maxSpeed = 2.5; // meters per second
+		public static final double maxSpeedBoost = 4.5; // meters per second
 		public static final double maxAngularVelocity = 11.5;
 
 		/* Angle Encoder Invert */
@@ -88,12 +79,34 @@ public final class Constants {
 		};
 
 		public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
-				new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
 				new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-				new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-				new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
+				new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+				new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0),
+				new Translation2d(-wheelBase / 2.0, trackWidth / 2.0));
 	}
 
+	public static final class Phematics {
+		public static final int compressorId = 0;
+		public static Compressor compressor = new Compressor(compressorId, PneumaticsModuleType.CTREPCM);
+		
+	}
+
+	public static final class Subsystems {
+		public static final class Boom {
+			public static final double BottomRowRots = 1;
+			public static final double MiddleRowRots = 10;
+			public static final double TopRowRots = 15;
+
+			public static final double IntakeRots = 3;
+
+			public static final int forwardId = 2;
+			public static final int	reverseId = 3;
+		}
+		public static final class Gripper {
+			public static final int forwardId = 0;
+			public static final int	reverseId = 1;
+		}
+	}
 	public static final class AutoConstants {
 		public static final double kMaxSpeedMetersPerSecond = 3;
 		public static final double kMaxAccelerationMetersPerSecondSquared = 3;

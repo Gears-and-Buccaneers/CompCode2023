@@ -11,7 +11,7 @@ public final class LogitechController {
 	private static final double deadband = 0.05;
 
 	public final JoystickButton A, B, X, Y, LB, RB, BACK, START, LT, RT;
-	public final JoystickAxis LS_X, LS_Y, RS_X, RS_Y;
+	public final JoystickAxis LS_X, LS_Y, RS_X, RS_Y, LT_S, RT_S;
 
 	public LogitechController(int port) {
 		Joystick joystick = new Joystick(port);
@@ -31,5 +31,9 @@ public final class LogitechController {
 		LS_Y = new JoystickAxis(joystick, 1, deadband);
 		RS_X = new JoystickAxis(joystick, 4, deadband);
 		RS_Y = new JoystickAxis(joystick, 5, deadband);
+
+		LT_S = new JoystickAxis(joystick, 2, deadband);
+		RT_S = new JoystickAxis(joystick, 3, deadband);
+		
 	}
 }

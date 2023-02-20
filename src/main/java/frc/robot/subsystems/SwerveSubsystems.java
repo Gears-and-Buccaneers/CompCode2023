@@ -14,11 +14,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.configs.Constants;
 
-public class Swerve extends SubsystemBase {
+public class SwerveSubsystems extends SubsystemBase {
 	public SwerveDriveOdometry swerveOdometry;
 	public PigeonIMU gyro;
 
-	public Swerve() {
+	public SwerveSubsystems() {
 		gyro = new PigeonIMU(Constants.Swerve.pigeonID);
 		gyro.configFactoryDefault();
 		zeroGyro();

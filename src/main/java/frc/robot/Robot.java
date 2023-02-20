@@ -1,6 +1,8 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+// import javax.xml.crypto.KeySelector.Purpose;
+
+// import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,10 +13,11 @@ import frc.lib.configs.Constants.Controls;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-
+import frc.lib.configs.Constants.Phematics;
 public class Robot extends TimedRobot {
-	private final Swerve swerve = new Swerve();
-	private final Arm arm = new Arm();
+	private final SwerveSubsystems swerve = new SwerveSubsystems();
+	private final BoomSubsystems arm = new BoomSubsystems();
+	private final GripperSubsystems gripper = new GripperSubsystems();
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -27,7 +30,8 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		swerve.setDefaultCommand(new TeleopSwerve(swerve));
 
-		arm.setDefaultCommand(arm.run(() -> arm.controller.set(ControlMode.PercentOutput, Controls.arm.get())));
+		//Controls.driver.Y.whileTrue(arm.run(() -> arm.set(5.0)));
+
 
 		// Controls.driver.Y.whileTrue(new SetAngle(swerve, 0));
 		// Controls.driver.B.whileTrue(new SetAngle(swerve, 90));
@@ -35,15 +39,20 @@ public class Robot extends TimedRobot {
 		// Controls.driver.X.whileTrue(new SetAngle(swerve, 270));
 
 		// Configure the button bindings
-		// Controls.zeroGyro.whileTrue(swerve.runOnce(swerve::zeroGyro).andThen(swerve.runOnce(swerve::updateAngleMotors)));
-		// Controls.visionTest.whileTrue(new VisionTest(swerve));
+		Controls.driver.BACK.whileTrue(swerve.runOnce(swerve::zeroGyro));//.andThen(swerve.runOnce(swerve::updateAngleMotors)));
+		Controls.driver.X.whileTrue(new VisionTest(swerve));
+		Controls.driver.Y.whileTrue(gripper.runOnce(() -> gripper.toggle()));
 
-		// Setup autos
+		// Setup autos picker
 		chooser.setDefaultOption("None", null);
 		chooser.addOption("Coded Trajectory", exampleAuto);
 		chooser.addOption("PathPlannerAuto", PathPlannerAuto);
 
-		SmartDashboard.putData(chooser);
+		SmartDashboard.putData("Auto Path", chooser);
+
+		// set up compresser
+		Phematics.compressor.enableHybrid(100, 120);
+		SmartDashboard.putNumber("compressor PSO", Phematics.compressor.getPressure());
 	}
 
 	@Override
