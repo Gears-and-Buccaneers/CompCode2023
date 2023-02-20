@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
 			BasicStateMachineFramework.DEBUG.set(true);
 			StateMachineEngine engine = new BasicStateMachineEngine(actionParsers);
 			engine.start();
+			// FIXME: convert this to a classpath URI by adding src/main/assets/* */ or maybe just /assets/* to the packaging
 			stateMachineContext = engine.startFSMSession(URI.create("file:///Users/phrogz/Code/scxmltest/scxmltest/src/main/java/net/phrogz/scxml/test/robot.scxml"));
         } catch (ConfigurationException e) {
             e.printStackTrace();
