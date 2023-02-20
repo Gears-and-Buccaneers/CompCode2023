@@ -1,7 +1,7 @@
 package frc.robot.autos;
 
 import frc.lib.configs.Constants;
-import frc.robot.subsystems.SwerveSubsystems;
+import frc.robot.subsystems.Swerve;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import com.pathplanner.lib.PathConstraints;
@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import com.pathplanner.lib.auto.PIDConstants;
 
 public class PathPlannerTesting extends SequentialCommandGroup {
-	public PathPlannerTesting(SwerveSubsystems Swerve) {
+	public PathPlannerTesting(Swerve Swerve) {
 
 		// This will load the file "FullAuto.path" and generate it with a max velocity
 		// of 4 m/s and a max acceleration of 3 m/s^2

@@ -11,14 +11,15 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.configs.Constants;
 
-public class SwerveSubsystems extends SubsystemBase {
+public class Swerve extends SubsystemBase {
 	public SwerveDriveOdometry swerveOdometry;
 	public PigeonIMU gyro;
 
-	public SwerveSubsystems() {
+	public Swerve() {
 		gyro = new PigeonIMU(Constants.Swerve.pigeonID);
 		gyro.configFactoryDefault();
 		zeroGyro();
