@@ -1,5 +1,5 @@
-<scxml initial="ReadyToPickup" version="1.0" xmlns="http://www.w3.org/2005/07/scxml" xmlns:gnb="http://dawsonschool.org/robotics/2972" xmlns:viz="http://phrogz.net/ns/visual-scxml-editor">
-	<viz:customActions>
+<scxml initial="ReadyToPickup" version="1.0" xmlns="http://www.w3.org/2005/07/scxml" xmlns:gnb="http://dawsonschool.org/robotics/2972" xmlns:viz="http://phrogz.net/visual-scxml">
+	<viz:actions>
 		<!-- this block is not required, nor does it need to be kept up-to-date;
 			 it's just part of future work towards allowing custom actions to be visually edited -->
 		<gnb:enableDriving>
@@ -13,7 +13,7 @@
 			<viz:attribute name="magic" type="choice" values="(none),alignToPiece,extendBoom,retractBoom,autoReverse,driveToGrid"/>
 		</gnb:doMagic>
 		<gnb:calibrate/>
-	</viz:customActions>
+	</viz:actions>
 	<datamodel>
 		<!-- these variables are expected to be set by the robot from the outside -->
 		<data expr="false" id="grabbablePieceDetected"/>
