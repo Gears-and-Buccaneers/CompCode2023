@@ -46,13 +46,13 @@ public class Robot extends TimedRobot {
 			StateMachineEngine engine = new BasicStateMachineEngine(actionParsers);
 			engine.start();
 			stateMachineContext = engine.startFSMSession(URI.create("classpath:robot.scxml"));
-        } catch (ConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SCXMLParserException e) {
-            e.printStackTrace();
-        }
+		} catch (ConfigurationException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SCXMLParserException e) {
+			e.printStackTrace();
+		}
 
 		swerve.setDefaultCommand(new TeleopSwerve(swerve));
 
