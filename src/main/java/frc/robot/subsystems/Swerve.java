@@ -27,15 +27,12 @@ public class Swerve extends SubsystemBase {
 	}
 
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-		ChassisSpeeds speeds = fieldRelative
-				? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation, getYaw())
-				: new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+		ChassisSpeeds speeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+
+		if (fieldRelative)
+			speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getYaw());
 
 		setModuleStates(Constants.Swerve.swerveKinematics.toSwerveModuleStates(speeds), isOpenLoop);
-	}
-
-	public void setModuleStates(SwerveModuleState[] desiredStates) {
-		setModuleStates(desiredStates, false);
 	}
 
 	public void setModuleStates(SwerveModuleState[] desiredStates, boolean openLoop) {
@@ -43,6 +40,20 @@ public class Swerve extends SubsystemBase {
 
 		for (SwerveModule mod : Constants.Swerve.mods)
 			mod.setDesiredState(desiredStates[mod.moduleNumber], openLoop);
+	}
+
+	// public void updateAngleMotors() {
+	// for (SwerveModule mod : Constants.Swerve.mods)
+	// mod.updateAngleMotor();
+	// }
+
+	public void setModuleStates(SwerveModuleState[] desiredStates) {
+		setModuleStates(desiredStates, true);
+	}
+
+	public void setToCurrent() {
+		for (SwerveModule mod : Constants.Swerve.mods)
+			mod.setToCurrent();
 	}
 
 	public Pose2d getPose() {
@@ -68,15 +79,26 @@ public class Swerve extends SubsystemBase {
 		return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw())
 				: Rotation2d.fromDegrees(gyro.getYaw());
 	}
+	public Rotation2d getPitch() {
+		return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getPitch())
+				: Rotation2d.fromDegrees(gyro.getPitch());
+	}
+	public Rotation2d getRoll() {
+		return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getRoll())
+				: Rotation2d.fromDegrees(gyro.getRoll());
+	}
 
 	@Override
 	public void periodic() {
 		swerveOdometry.update(getYaw(), getPos());
 
 		for (SwerveModule mod : Constants.Swerve.mods) {
-			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
-			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
+			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Cancoder", mod.getEncoder());
+			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Integrated", mod.getIntegrated());
+			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Velocity", mod.getVelocity());
+			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Absolute Position", mod.getAbsolutePosition());
+			// SmartDashboard.putNumber("Mod" + mod.moduleNumber + " last angle",
+			// mod.lastAngle);
 		}
 	}
 }

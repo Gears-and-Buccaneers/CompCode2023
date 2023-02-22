@@ -8,13 +8,14 @@ import java.io.IOException;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.configs.Constants.Controls;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.lib.configs.Constants.Pneumatics;
+import frc.lib.configs.Constants.Boom.BoomLevel;
 
 import com.nosolojava.fsm.impl.runtime.basic.BasicStateMachineEngine;
 import com.nosolojava.fsm.impl.runtime.basic.BasicStateMachineFramework;
@@ -26,8 +27,12 @@ import com.nosolojava.fsm.parser.XppActionParser;
 
 public class Robot extends TimedRobot {
 	private final Swerve swerve = new Swerve();
+  
 	public Context stateMachineContext;
 	public Boolean drivingEnabled = false;
+  
+	private final Boom arm = new Boom();
+	private final Gripper gripper = new Gripper();
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -54,18 +59,31 @@ public class Robot extends TimedRobot {
 			e.printStackTrace();
 		}
 
-		swerve.setDefaultCommand(new TeleopSwerve(swerve));
+		// swerve.setDefaultCommand(new TeleopSwerve(swerve));
+
+		Controls.driver.X.whileTrue(arm.extendTo(BoomLevel.BOTTOM));
+		Controls.driver.Y.whileTrue(arm.extendTo(BoomLevel.TOP));
+
+		// Controls.driver.Y.whileTrue(new SetAngle(swerve, 0));
+		// Controls.driver.B.whileTrue(new SetAngle(swerve, 90));
+		// Controls.driver.A.whileTrue(new SetAngle(swerve, 180));
+		// Controls.driver.X.whileTrue(new SetAngle(swerve, 270));
 
 		// Configure the button bindings
-		Controls.zeroGyro.whileTrue(new InstantCommand(swerve::zeroGyro));
-		Controls.visionTest.whileTrue(new VisionTest(swerve));
+		Controls.driver.BACK.whileTrue(swerve.runOnce(swerve::zeroGyro));// .andThen(swerve.runOnce(swerve::updateAngleMotors)));
+		// Controls.driver.X.whileTrue(new VisionTest(swerve));
+		// Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
 
-		// Setup autos
+		// Setup autos picker
 		chooser.setDefaultOption("None", null);
 		chooser.addOption("Coded Trajectory", exampleAuto);
 		chooser.addOption("PathPlannerAuto", PathPlannerAuto);
 
-		SmartDashboard.putData(chooser);
+		SmartDashboard.putData("Auto Path", chooser);
+
+		// set up compresser
+		Pneumatics.compressor.enableHybrid(100, 120);
+		SmartDashboard.putNumber("compressor PSI", Pneumatics.compressor.getPressure());
 	}
 
 	@Override

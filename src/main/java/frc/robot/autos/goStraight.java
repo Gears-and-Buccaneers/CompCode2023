@@ -15,13 +15,13 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import com.pathplanner.lib.auto.PIDConstants;
 
-public class PathPlannerTesting extends SequentialCommandGroup {
-	public PathPlannerTesting(Swerve Swerve) {
+public class goStraight extends SequentialCommandGroup {
+	public goStraight(Swerve Swerve) {
 
 		// This will load the file "FullAuto.path" and generate it with a max velocity
 		// of 4 m/s and a max acceleration of 3 m/s^2
 		// for every path in the group
-		List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("PathPlanerSwerve",
+		List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("GO Straight",
 				new PathConstraints(.5, 3));
 
 		// This is just an example event map. It would be better to have a constant,
@@ -39,7 +39,7 @@ public class PathPlannerTesting extends SequentialCommandGroup {
 				Swerve::getPose, // Pose2d supplier
 				Swerve::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
 				Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-				new PIDConstants(1, 0.0, 0.1), // PID constants to correct for translation error (used to create the X
+				new PIDConstants(.7, 0.0, 0.2), // PID constants to correct for translation error (used to create the X
 				// and Y PID controllers)
 				new PIDConstants(1, 0.0, 0.1), // PID constants to correct for rotation error (used to create the
 				// rotation controller)

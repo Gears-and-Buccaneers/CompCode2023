@@ -7,8 +7,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.lib.util.JoystickAxis;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.lib.util.LogitechController;
 import frc.lib.util.TalonConfig;
 import frc.robot.subsystems.SwerveModule;
@@ -16,20 +16,12 @@ import frc.robot.subsystems.SwerveModule;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
 public final class Constants {
+	public static final int armControllerId = 20;
+
 	/** Robot Controls */
 	public static final class Controls {
-		static final LogitechController driver = new LogitechController(0);
-		static final LogitechController operator = new LogitechController(1);
-
-		public static final JoystickAxis xAxis = driver.LS_X;
-		public static final JoystickAxis yAxis = driver.LS_Y;
-		public static final JoystickAxis rAxis = driver.RS_X;
-
-		public static final JoystickButton fieldRelative = driver.LB;
-		public static final JoystickButton zeroGyro = driver.BACK;
-
-		public static final JoystickButton visionTest = driver.X;
-
+		public static final LogitechController driver = new LogitechController(0);
+		public static final LogitechController operator = new LogitechController(1);
 	}
 
 	public static final class Vision {
@@ -52,14 +44,8 @@ public final class Constants {
 		public static final double driveGearRatio = 1 / 8.14; // 6.86:1
 		public static final double angleGearRatio = (150 / 7); // 12.8:1
 
-		public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
-				new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-				new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
-				new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-				new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
-
 		/** Swerve angle motor configs */
-		public static final TalonConfig angleConfig = new TalonConfig(0.6, 0.0, 12.0, 0.0, false, NeutralMode.Coast,
+		public static final TalonConfig angleConfig = new TalonConfig(0.6, 0.0, 12.0, 0.0, true, NeutralMode.Coast,
 				new SupplyCurrentLimitConfiguration(true, 25, 40, 0.1));
 
 		/** Swerve drive motor configs */
@@ -71,7 +57,8 @@ public final class Constants {
 				0.27 / 12);
 
 		/* Swerve Profiling Values */
-		public static final double maxSpeed = 4.5; // meters per second
+		public static final double maxSpeed = 2.5; // meters per second
+		public static final double maxSpeedBoost = 4.5; // meters per second
 		public static final double maxAngularVelocity = 11.5;
 
 		/* Angle Encoder Invert */
@@ -80,14 +67,52 @@ public final class Constants {
 		/** Swerve modules */
 		public static final SwerveModule[] mods = {
 				// Front Left Module - Module 1
-				new SwerveModule(0, 1, 5, 1, 199.0),
+				new SwerveModule(0, 1, 5, 1, 23.2),
 				// Front Right Module - Module 2
-				new SwerveModule(1, 2, 6, 2, 203.65),
-				// Back Left Module - Module 3
-				new SwerveModule(2, 3, 7, 3, 8.87),
-				// Back Right Module - Module 4
-				new SwerveModule(3, 4, 8, 4, 76.40)
+				new SwerveModule(1, 2, 6, 2, 19.2),
+				// Back Right Module - Module 3
+				new SwerveModule(2, 3, 7, 3, 255.6),
+				// Back Left Module - Module 4
+				new SwerveModule(3, 4, 8, 4, 187.6)
 		};
+
+		public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
+				new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+				new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+				new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0),
+				new Translation2d(-wheelBase / 2.0, trackWidth / 2.0));
+	}
+
+	public static final class Pneumatics {
+		public static final int compressorId = 0;
+		public static Compressor compressor = new Compressor(compressorId, PneumaticsModuleType.CTREPCM);
+	}
+
+	public static final class Boom {
+		public enum BoomLevel {
+			BOTTOM(1),
+			MIDDLE(10),
+			TOP(15),
+			INTAKE(3);
+
+			private final double length;
+
+			private BoomLevel(double l) {
+				length = l;
+			}
+
+			public double getLength() {
+				return length;
+			}
+		}
+
+		public static final int forwardId = 2;
+		public static final int reverseId = 3;
+	}
+
+	public static final class Gripper {
+		public static final int forwardId = 0;
+		public static final int reverseId = 1;
 	}
 
 	public static final class AutoConstants {
@@ -98,7 +123,7 @@ public final class Constants {
 
 		public static final double kPXController = 1;
 		public static final double kPYController = 1;
-		public static final double kPThetaController = 1;
+		public static final double kPThetaController = .1;
 
 		// Constraint for the motion profilied robot angle controller
 		public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
