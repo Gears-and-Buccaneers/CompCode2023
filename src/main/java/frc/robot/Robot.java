@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
 
 		// set up compresser
 		Pneumatics.compressor.enableHybrid(100, 120);
-		SmartDashboard.putNumber("compressor PSO", Pneumatics.compressor.getPressure());
+		SmartDashboard.putNumber("compressor PSI", Pneumatics.compressor.getPressure());
 	}
 
 	@Override

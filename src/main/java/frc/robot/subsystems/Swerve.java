@@ -48,7 +48,7 @@ public class Swerve extends SubsystemBase {
 	// }
 
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
-		setModuleStates(desiredStates, false);
+		setModuleStates(desiredStates, true);
 	}
 
 	public void setToCurrent() {
@@ -78,6 +78,14 @@ public class Swerve extends SubsystemBase {
 	public Rotation2d getYaw() {
 		return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw())
 				: Rotation2d.fromDegrees(gyro.getYaw());
+	}
+	public Rotation2d getPitch() {
+		return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getPitch())
+				: Rotation2d.fromDegrees(gyro.getPitch());
+	}
+	public Rotation2d getRoll() {
+		return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getRoll())
+				: Rotation2d.fromDegrees(gyro.getRoll());
 	}
 
 	@Override
