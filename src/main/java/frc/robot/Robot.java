@@ -14,6 +14,7 @@ import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.lib.configs.Constants.Pneumatics;
+import frc.lib.configs.Constants.Boom.BoomLevel;
 
 public class Robot extends TimedRobot {
 	private final Swerve swerve = new Swerve();
@@ -29,9 +30,10 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-		swerve.setDefaultCommand(new TeleopSwerve(swerve));
+		// swerve.setDefaultCommand(new TeleopSwerve(swerve));
 
-		// Controls.driver.Y.whileTrue(arm.run(() -> arm.set(5.0)));
+		Controls.driver.X.whileTrue(arm.extendTo(BoomLevel.BOTTOM));
+		Controls.driver.Y.whileTrue(arm.extendTo(BoomLevel.TOP));
 
 		// Controls.driver.Y.whileTrue(new SetAngle(swerve, 0));
 		// Controls.driver.B.whileTrue(new SetAngle(swerve, 90));
@@ -40,8 +42,8 @@ public class Robot extends TimedRobot {
 
 		// Configure the button bindings
 		Controls.driver.BACK.whileTrue(swerve.runOnce(swerve::zeroGyro));// .andThen(swerve.runOnce(swerve::updateAngleMotors)));
-		Controls.driver.X.whileTrue(new VisionTest(swerve));
-		Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
+		// Controls.driver.X.whileTrue(new VisionTest(swerve));
+		// Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
 
 		// Setup autos picker
 		chooser.setDefaultOption("None", null);

@@ -17,7 +17,7 @@ import frc.lib.configs.Constants.Boom.BoomLevel;
 
 public class Boom extends SubsystemBase {
 	public TalonSRX controller = new TalonSRX(Constants.armControllerId);
-	public PIDController pid = new PIDController(.1, 0, 0);
+	public PIDController pid = new PIDController(0.5, 0, .01);
 	public Encoder encoder = new Encoder(2, 3);
 
 	public final DoubleSolenoid pneumatic = new DoubleSolenoid(
@@ -26,19 +26,22 @@ public class Boom extends SubsystemBase {
 
 	public Boom() {
 		controller.setNeutralMode(NeutralMode.Brake);
-		encoder.setDistancePerPulse(1 / 2048);
+
+		pid.setTolerance(0.2);
 	}
 
 	public CommandBase extendTo(BoomLevel level) {
-		return run(() -> {
-			SmartDashboard.putNumber("Boom Encoder", encoder.get());
+		return runEnd(() -> {
+			double output = pid.calculate(encoder.get() / 2048, level.getLength());
+			// output /= 2048;
+			SmartDashboard.putNumber("Boom output", -output);
 
-			double output = pid.calculate(encoder.get(), level.getLength());
+			controller.set(ControlMode.PercentOutput, -output);
+		}, () -> controller.set(ControlMode.PercentOutput, 0));
+	}
 
-			// SmartDashboard.putNumber("pid", output);
-
-			controller.set(ControlMode.PercentOutput, output);
-		});
+	public void periodic() {
+		SmartDashboard.putNumber("Boom Encoder", encoder.get());
 	}
 
 	/** @return extends the pneumatic */
