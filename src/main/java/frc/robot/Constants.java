@@ -1,4 +1,6 @@
-package frc.lib.configs;
+package frc.robot;
+
+import java.io.File;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -8,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.lib.util.LogitechController;
 import frc.lib.util.TalonConfig;
@@ -18,7 +21,11 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 public final class Constants {
 	public static final int armControllerId = 20;
 
-	/** Robot Controls */
+	public static final class State {
+		public static final File file = new File(Filesystem.getDeployDirectory(), "robot.scxml");
+		public static final String namespace = "http://dawsonschool.org/robotics/2972";
+	}
+
 	public static final class Controls {
 		public static final LogitechController driver = new LogitechController(0);
 		public static final LogitechController operator = new LogitechController(1);
@@ -28,7 +35,6 @@ public final class Constants {
 		public static final String cameraName = "photonvision";
 	}
 
-	/** Swerve Configs */
 	public static final class Swerve {
 		public static final boolean openLoop = true;
 

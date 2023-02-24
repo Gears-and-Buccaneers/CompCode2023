@@ -1,6 +1,6 @@
 package frc.robot.autos;
 
-import frc.lib.configs.Constants;
+import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -29,7 +29,7 @@ public class goStraight extends SequentialCommandGroup {
 
 		// in your code that will be used by all path following commands.
 		HashMap<String, Command> eventMap = new HashMap<>();
-		//eventMap.put("marker1", new PrintCommand("Passed marker 1"));
+		// eventMap.put("marker1", new PrintCommand("Passed marker 1"));
 		// eventMap.put("intakeDown", new IntakeDown());
 
 		// Create the AutoBuilder. This only needs to be created once when robot code

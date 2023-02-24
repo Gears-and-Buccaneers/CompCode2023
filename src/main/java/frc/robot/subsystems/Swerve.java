@@ -12,7 +12,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.configs.Constants;
+import frc.robot.Constants;
 
 public class Swerve extends SubsystemBase {
 	public SwerveDriveOdometry swerveOdometry;
@@ -41,11 +41,6 @@ public class Swerve extends SubsystemBase {
 		for (SwerveModule mod : Constants.Swerve.mods)
 			mod.setDesiredState(desiredStates[mod.moduleNumber], openLoop);
 	}
-
-	// public void updateAngleMotors() {
-	// for (SwerveModule mod : Constants.Swerve.mods)
-	// mod.updateAngleMotor();
-	// }
 
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		setModuleStates(desiredStates, true);
@@ -79,10 +74,12 @@ public class Swerve extends SubsystemBase {
 		return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw())
 				: Rotation2d.fromDegrees(gyro.getYaw());
 	}
+
 	public Rotation2d getPitch() {
 		return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getPitch())
 				: Rotation2d.fromDegrees(gyro.getPitch());
 	}
+
 	public Rotation2d getRoll() {
 		return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getRoll())
 				: Rotation2d.fromDegrees(gyro.getRoll());

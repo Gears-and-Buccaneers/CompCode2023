@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
-import frc.lib.configs.Constants;
-import frc.lib.configs.Constants.Controls;
+import frc.robot.Constants;
+import frc.robot.Constants.Controls;
 import frc.robot.subsystems.Swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;

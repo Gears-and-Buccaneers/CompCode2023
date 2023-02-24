@@ -1,36 +1,19 @@
 package frc.robot;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.net.URI;
-import java.io.IOException;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib.configs.Constants.Controls;
+import frc.robot.Constants.Controls;
+import frc.robot.Constants.Pneumatics;
+import frc.robot.Constants.Boom.BoomLevel;
 import frc.robot.autos.*;
-import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import frc.lib.configs.Constants.Pneumatics;
-import frc.lib.configs.Constants.Boom.BoomLevel;
-
-import com.nosolojava.fsm.impl.runtime.basic.BasicStateMachineEngine;
-import com.nosolojava.fsm.impl.runtime.basic.BasicStateMachineFramework;
-import com.nosolojava.fsm.runtime.StateMachineEngine;
-import com.nosolojava.fsm.runtime.Context;
-import com.nosolojava.fsm.model.config.exception.ConfigurationException;
-import com.nosolojava.fsm.parser.exception.SCXMLParserException;
-import com.nosolojava.fsm.parser.XppActionParser;
 
 public class Robot extends TimedRobot {
 	private final Swerve swerve = new Swerve();
-  
-	public Context stateMachineContext;
-	public Boolean drivingEnabled = false;
-  
+
 	private final Boom arm = new Boom();
 	private final Gripper gripper = new Gripper();
 
@@ -43,22 +26,6 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-		// Boot up the state machine
-		try {
-			List<XppActionParser> actionParsers = new ArrayList<XppActionParser>();
-			actionParsers.add(new StateMachineActions(this));
-			BasicStateMachineFramework.DEBUG.set(true);
-			StateMachineEngine engine = new BasicStateMachineEngine(actionParsers);
-			engine.start();
-			stateMachineContext = engine.startFSMSession(URI.create("classpath:robot.scxml"));
-		} catch (ConfigurationException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SCXMLParserException e) {
-			e.printStackTrace();
-		}
-
 		// swerve.setDefaultCommand(new TeleopSwerve(swerve));
 
 		Controls.driver.X.whileTrue(arm.extendTo(BoomLevel.BOTTOM));

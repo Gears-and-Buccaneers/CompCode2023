@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.configs.Constants;
-import frc.lib.configs.Constants.Boom.BoomLevel;
+import frc.robot.Constants;
+import frc.robot.Constants.Boom.BoomLevel;
 
 public class Boom extends SubsystemBase {
 	public TalonSRX controller = new TalonSRX(Constants.armControllerId);
@@ -33,7 +33,6 @@ public class Boom extends SubsystemBase {
 	public CommandBase extendTo(BoomLevel level) {
 		return runEnd(() -> {
 			double output = pid.calculate(encoder.get() / 2048, level.getLength());
-			// output /= 2048;
 			SmartDashboard.putNumber("Boom output", -output);
 
 			controller.set(ControlMode.PercentOutput, -output);
@@ -44,22 +43,19 @@ public class Boom extends SubsystemBase {
 		SmartDashboard.putNumber("Boom Encoder", encoder.get());
 	}
 
-	/** @return extends the pneumatic */
 	public void raise() {
 		pneumatic.set(Value.kForward);
 	}
 
-	/** @return retracts the pneumatic */
 	public void lower() {
 		pneumatic.set(Value.kReverse);
 	}
 
-	/** @return toogles the state of the pneumatic */
-	public void toggle() {
+	public void toggleRaised() {
 		pneumatic.toggle();
 	}
 
-	public boolean pneumaticExtended() {
+	public boolean isRaised() {
 		return (pneumatic.get().equals(Value.kForward));
 	}
 }
