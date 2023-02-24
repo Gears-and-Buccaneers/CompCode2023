@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Auto Path", chooser);
 
 		// set up compresser
-		Pneumatics.compressor.enableHybrid(100, 120);
+		Pneumatics.compressor.enableHybrid(110, 120);
 		SmartDashboard.putNumber("compressor PSI", Pneumatics.compressor.getPressure());
 	}
 
