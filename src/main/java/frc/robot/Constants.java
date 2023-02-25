@@ -95,25 +95,32 @@ public final class Constants {
 	}
 
 	public static final class Boom {
-		public enum BoomLevel {
-			BOTTOM(1),
-			MIDDLE(10),
-			TOP(15),
-			INTAKE(3);
+		public static final double raiseDelay = 0.6;
+		public static final double pidDeadband = 0.01;
+		public static final int id = 2;
+
+		public enum Level {
+			BOTTOM(1, true),
+			MIDDLE(10, true),
+			TOP(15, true),
+			INTAKE(0.5, true);
 
 			private final double length;
+			private final boolean raised;
 
-			private BoomLevel(double l) {
-				length = l;
+			private Level(double length, boolean raised) {
+				this.length = length;
+				this.raised = raised;
 			}
 
 			public double getLength() {
 				return length;
 			}
-		}
 
-		public static final int forwardId = 2;
-		public static final int reverseId = 3;
+			public boolean isRaised() {
+				return raised;
+			}
+		}
 	}
 
 	public static final class Gripper {

@@ -12,7 +12,6 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import com.pathplanner.lib.auto.PIDConstants;
 
 public class goStraight extends SequentialCommandGroup {
