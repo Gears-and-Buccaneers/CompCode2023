@@ -68,7 +68,8 @@ public class SwerveModule {
 			double percentOutput = desiredState.speedMetersPerSecond / Constants.SwerveConst.maxSpeed;
 			driveMotor.set(ControlMode.PercentOutput, percentOutput);
 		} else {
-			double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond, Constants.SwerveConst.wheelCircumference,
+			double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond,
+					Constants.SwerveConst.wheelCircumference,
 					Constants.SwerveConst.driveGearRatio);
 
 			driveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward,
@@ -105,7 +106,8 @@ public class SwerveModule {
 	}
 
 	public double getIntegrated() {
-		return Conversions.falconToDegrees(angleMotor.getSelectedSensorPosition(), Constants.SwerveConst.angleGearRatio);
+		return Conversions.falconToDegrees(angleMotor.getSelectedSensorPosition(),
+				Constants.SwerveConst.angleGearRatio);
 	}
 
 	public double getVelocity() {

@@ -36,13 +36,17 @@ public final class Constants {
 
 	public static final class Vision {
 		public static final String leftCameraName = "leftCam";
-		public static final Transform3d robotToLeftCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); 
+		public static final Transform3d robotToLeftCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5),
+				new Rotation3d(0, 0, 0));
 		public static final Transform3d leftCamToRobot = robotToLeftCam.inverse();
-		//Cam mounted facing forward, half a meter forward of center, half a meter up from center.
+		// Cam mounted facing forward, half a meter forward of center, half a meter up
+		// from center.
 		public static final String rightCameraName = "rightCam";
-		public static final Transform3d robotToRightCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); 
+		public static final Transform3d robotToRightCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5),
+				new Rotation3d(0, 0, 0));
 		public static final Transform3d rightCamToRobot = robotToRightCam.inverse();
-		//Cam mounted facing forward, half a meter forward of center, half a meter up from center.
+		// Cam mounted facing forward, half a meter forward of center, half a meter up
+		// from center.
 	}
 
 	public static final class SwerveConst {

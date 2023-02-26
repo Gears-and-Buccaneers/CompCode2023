@@ -45,6 +45,7 @@ public class Swerve extends SubsystemBase {
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		setModuleStates(desiredStates, true);
 	}
+
 	public void setToCurrent() {
 		for (SwerveModule mod : Constants.SwerveConst.mods)
 			mod.setToCurrent();

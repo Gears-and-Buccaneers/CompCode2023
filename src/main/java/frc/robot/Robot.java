@@ -21,7 +21,7 @@ public class Robot extends TimedRobot {
 	// Cameras
 	private final PhotonCamera leftCamera = new PhotonCamera(Vision.leftCameraName);
 	private final PhotonCamera rightCamera = new PhotonCamera(Vision.rightCameraName);
-	
+
 	// subystems
 	private final Swerve swerve = new Swerve();
 	private final Boom arm = new Boom();
@@ -40,8 +40,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		// swerve.setDefaultCommand(new TeleopSwerve(swerve));
-
-		
 
 		// Configure the button bindings
 		Controls.driver.BACK.whileTrue(swerve.runOnce(swerve::zeroGyro));// .andThen(swerve.runOnce(swerve::updateAngleMotors)));
