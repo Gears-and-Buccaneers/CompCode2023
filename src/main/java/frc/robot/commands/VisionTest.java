@@ -16,13 +16,9 @@ import frc.robot.Constants.Vision;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Swerve;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -100,7 +96,7 @@ public class VisionTest extends CommandBase {
 				lastTarget = target;
 
 				// Transform the robot's pose to find the camera's pose
-				Pose3d cameraPose = robotPose.transformBy(Vision.robotToLeftCam);
+				Pose3d cameraPose = robotPose.transformBy(Vision.leftCamRelative);
 
 				// Trasnform the camera's pose to the target's pose
 				Transform3d camToTarget = target.getBestCameraToTarget();

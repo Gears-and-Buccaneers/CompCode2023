@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Compressor;
@@ -20,6 +21,8 @@ import frc.lib.util.TalonConfig;
 import frc.robot.subsystems.SwerveModule;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.auto.PIDConstants;
 
 public final class Constants {
 	public static final class State {
@@ -33,18 +36,17 @@ public final class Constants {
 	}
 
 	public static final class Vision {
+		// Cam mounted facing forward, half a meter forward of center, half a meter up
+		// from center.
 		public static final String leftCameraName = "leftCam";
-		public static final Transform3d robotToLeftCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5),
+		public static final Transform3d leftCamRelative = new Transform3d(new Translation3d(0.5, 0.0, 0.5),
 				new Rotation3d(0, 0, 0));
-		public static final Transform3d leftCamToRobot = robotToLeftCam.inverse();
+
 		// Cam mounted facing forward, half a meter forward of center, half a meter up
 		// from center.
 		public static final String rightCameraName = "rightCam";
-		public static final Transform3d robotToRightCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5),
+		public static final Transform3d rightCamRelative = new Transform3d(new Translation3d(0.5, 0.0, 0.5),
 				new Rotation3d(0, 0, 0));
-		public static final Transform3d rightCamToRobot = robotToRightCam.inverse();
-		// Cam mounted facing forward, half a meter forward of center, half a meter up
-		// from center.
 	}
 
 	public static final class SwerveC {
@@ -65,11 +67,13 @@ public final class Constants {
 		public static final double angleGearRatio = (150 / 7); // 12.8:1
 
 		/** Swerve angle motor configs */
-		public static final TalonConfig angleConfig = new TalonConfig(0.6, 0.0, 12.0, 0.0, true, NeutralMode.Coast,
+		public static final TalonConfig angleConfig = new TalonConfig(new PIDConstants(0.6, 0.0, 12.0), 0.0, true,
+				NeutralMode.Coast,
 				new SupplyCurrentLimitConfiguration(true, 25, 40, 0.1));
 
 		/** Swerve drive motor configs */
-		public static final TalonConfig driveConfig = new TalonConfig(0.1, 0.0, 12.0, 0.0, false, NeutralMode.Brake,
+		public static final TalonConfig driveConfig = new TalonConfig(new PIDConstants(0.1, 0.0, 12.0), 0.0, false,
+				NeutralMode.Brake,
 				new SupplyCurrentLimitConfiguration(true, 35, 60, 0.1), 0.25, 0.0);
 
 		/* Drive Motor Characterization Values */
@@ -108,10 +112,12 @@ public final class Constants {
 		public static Compressor compressor = new Compressor(compressorId, PneumaticsModuleType.CTREPCM);
 	}
 
-	public static final class Boom {
+	public static final class BoomC {
 		public static final double raiseDelay = 0.6;
 		public static final double pidDeadband = 0.01;
 		public static final int id = 2;
+
+		public static final int servoId = 4;
 
 		public static final int controllerId = 20;
 
@@ -145,18 +151,20 @@ public final class Constants {
 	}
 
 	public static final class AutoC {
-		public static final double kMaxSpeedMetersPerSecond = 3;
-		public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-		public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-		public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+		public static final PathConstraints constraints = new PathConstraints(.5, 3);
+		public static final PIDConstants translation = new PIDConstants(0.7, 0.0, 0.2);
+		public static final PIDConstants rotation = new PIDConstants(1.0, 0.0, 0.1);
 
 		public static final double kPXController = 1;
 		public static final double kPYController = 1;
 		public static final double kPThetaController = .1;
 
+		public static final TrajectoryConfig config = new TrajectoryConfig(3, 3)
+				.setKinematics(SwerveC.swerveKinematics);
+
 		// Constraint for the motion profilied robot angle controller
 		public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
-				kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+				Math.PI, Math.PI);
 	}
 
 }

@@ -5,16 +5,17 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import com.pathplanner.lib.auto.PIDConstants;
 
 public class TalonConfig extends TalonFXConfiguration {
 	boolean invert;
 	NeutralMode neutralMode;
 
-	public TalonConfig(double kP, double kI, double kD, double kF, boolean invert, NeutralMode neutralMode,
+	public TalonConfig(PIDConstants pid, double kF, boolean invert, NeutralMode neutralMode,
 			SupplyCurrentLimitConfiguration lim) {
-		super.slot0.kP = kP;
-		super.slot0.kI = kI;
-		super.slot0.kD = kD;
+		super.slot0.kP = pid.kP;
+		super.slot0.kI = pid.kI;
+		super.slot0.kD = pid.kD;
 		super.slot0.kF = kF;
 
 		super.voltageCompSaturation = 12;
@@ -28,9 +29,9 @@ public class TalonConfig extends TalonFXConfiguration {
 		this.neutralMode = neutralMode;
 	}
 
-	public TalonConfig(double kP, double kI, double kD, double kF, boolean invert, NeutralMode neutralMode,
+	public TalonConfig(PIDConstants pid, double kF, boolean invert, NeutralMode neutralMode,
 			SupplyCurrentLimitConfiguration lim, double openLoopRamp, double closedloopRamp) {
-		this(kP, kI, kD, kF, invert, neutralMode, lim);
+		this(pid, kF, invert, neutralMode, lim);
 
 		super.openloopRamp = openLoopRamp;
 		super.closedloopRamp = closedloopRamp;

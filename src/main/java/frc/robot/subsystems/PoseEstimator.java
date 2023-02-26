@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -56,18 +58,18 @@ public class PoseEstimator extends SubsystemBase {
 	@Override
 	public void periodic() {
 		// Update pose estimator with the best visible target
-		var pipelineResult = photonCamera.getLatestResult();
-		var resultTimestamp = pipelineResult.getTimestampSeconds();
+		PhotonPipelineResult pipelineResult = photonCamera.getLatestResult();
+		double resultTimestamp = pipelineResult.getTimestampSeconds();
 		if (resultTimestamp != previousPipelineTimestamp && pipelineResult.hasTargets()) {
 			previousPipelineTimestamp = resultTimestamp;
-			var target = pipelineResult.getBestTarget();
-			var fiducialId = target.getFiducialId();
+			PhotonTrackedTarget target = pipelineResult.getBestTarget();
+			int fiducialId = target.getFiducialId();
 			if (target.getPoseAmbiguity() <= .2 && fiducialId >= 0 && fiducialId < targetPoses.size()) {
-				var targetPose = targetPoses.get(fiducialId);
+				Pose3d targetPose = targetPoses.get(fiducialId);
 				Transform3d camToTarget = target.getBestCameraToTarget();
 				Pose3d camPose = targetPose.transformBy(camToTarget.inverse());
 
-				var visionMeasurement = camPose.transformBy(leftCamToRobot);
+				Pose3d visionMeasurement = camPose.transformBy(leftCamRelative);
 				swervePoseEstimator.addVisionMeasurement(visionMeasurement.toPose2d(), resultTimestamp);
 			}
 		}

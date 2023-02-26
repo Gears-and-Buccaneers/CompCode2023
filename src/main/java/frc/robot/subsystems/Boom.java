@@ -7,26 +7,29 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.Constants;
-import frc.robot.Constants.Boom.Level;
+
+import frc.robot.Constants.BoomC;
+import frc.robot.Constants.Pneumatics;
+import frc.robot.Constants.BoomC.Level;
 
 public class Boom extends SubsystemBase {
-	public TalonSRX controller = new TalonSRX(Constants.Boom.controllerId);
-	public PIDController pid = new PIDController(0.5, 0, .01);
-	public Encoder encoder = new Encoder(2, 3);
+	TalonSRX controller = new TalonSRX(BoomC.controllerId);
+	PIDController pid = new PIDController(0.5, 0, .01);
+	Encoder encoder = new Encoder(2, 3);
 
-	public final Solenoid pneumatic = new Solenoid(
-			Constants.Pneumatics.compressorId, PneumaticsModuleType.CTREPCM,
-			Constants.Boom.id);
+	Solenoid pneumatic = new Solenoid(
+			Pneumatics.compressorId, PneumaticsModuleType.CTREPCM,
+			BoomC.id);
+	boolean raised = pneumatic.get();
 
-	private boolean raised = pneumatic.get();
-	private double targetLength = encoder.get() / 2048, lastOutput;
+	Servo rachet = new Servo(BoomC.servoId);
 
 	public Boom() {
 		controller.setNeutralMode(NeutralMode.Brake);
@@ -34,39 +37,27 @@ public class Boom extends SubsystemBase {
 	}
 
 	public CommandBase setTo(Level level) {
-		WaitUntilCommand waitLength = new WaitUntilCommand(() -> lastOutput < Constants.Boom.pidDeadband);
-		waitLength.addRequirements(this);
-		CommandBase l = this.runOnce(() -> targetLength = level.getLength())
-				.andThen(waitLength);
-
-		targetLength = level.getLength();
-		pollPID();
+		CommandBase l = this.runOnce(() -> pid.setSetpoint(level.getLength()))
+				.andThen(new WaitUntilCommand(pid::atSetpoint));
 
 		if (raised == level.isRaised())
 			return l;
 
-		CommandBase waitRaised = new WaitCommand(Constants.Boom.raiseDelay);
-		waitRaised.addRequirements(this);
-		waitRaised = waitRaised.andThen(runOnce(() -> raised = level.isRaised()));
-
-		CommandBase r = runOnce(() -> pneumatic.set(level.isRaised()));
+		CommandBase r = runOnce(() -> pneumatic.set(level.isRaised())).andThen(new WaitCommand(BoomC.raiseDelay),
+				runOnce(() -> raised = level.isRaised()));
 
 		return level.isRaised() ? r.andThen(l) : l.andThen(r);
 	}
 
-	public void pollPID() {
-		double output = -pid.calculate(encoder.get() / 2048, targetLength);
-		controller.set(ControlMode.PercentOutput, output);
-
-		SmartDashboard.putNumber("Boom output", output);
-		SmartDashboard.putNumber("Boom Encoder", encoder.get());
+	public double getEncoder() {
+		return encoder.get() / 2048;
 	}
 
 	public void periodic() {
-		pollPID();
-	}
+		double output = -pid.calculate(encoder.get() / 2048);
+		controller.set(ControlMode.PercentOutput, output * 0.01);
 
-	public boolean isRaised() {
-		return pneumatic.get();
+		SmartDashboard.putNumber("Boom output", output);
+		SmartDashboard.putNumber("Boom Encoder", encoder.get());
 	}
 }

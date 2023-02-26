@@ -1,9 +1,8 @@
 package frc.lib.util;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public final class LogitechController {
 	public static final int yAxis = 1;
@@ -12,13 +11,20 @@ public final class LogitechController {
 
 	private static final double deadband = 0.05;
 
-	public final JoystickButton A, B, X, Y, LB, RB, BACK, START, LT, RT;
+	public final Trigger A, B, X, Y, LB, RB, BACK, START, LT, RT, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT,
+			UP_LEFT, CENTER;
 	public final JoystickAxis LS_X, LS_Y, RS_X, RS_Y, LT_S, RT_S;
-	public final Supplier<Boolean> UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT, CENTER;
 
 	public LogitechController(int port) {
-
 		Joystick joystick = new Joystick(port);
+
+		LS_X = new JoystickAxis(joystick, 0, deadband);
+		LS_Y = new JoystickAxis(joystick, 1, deadband);
+		RS_X = new JoystickAxis(joystick, 4, deadband);
+		RS_Y = new JoystickAxis(joystick, 5, deadband);
+
+		LT_S = new JoystickAxis(joystick, 2, deadband);
+		RT_S = new JoystickAxis(joystick, 3, deadband);
 
 		A = new JoystickButton(joystick, 1);
 		B = new JoystickButton(joystick, 2);
@@ -31,22 +37,14 @@ public final class LogitechController {
 		LT = new JoystickButton(joystick, 9);
 		RT = new JoystickButton(joystick, 10);
 
-		LS_X = new JoystickAxis(joystick, 0, deadband);
-		LS_Y = new JoystickAxis(joystick, 1, deadband);
-		RS_X = new JoystickAxis(joystick, 4, deadband);
-		RS_Y = new JoystickAxis(joystick, 5, deadband);
-
-		LT_S = new JoystickAxis(joystick, 2, deadband);
-		RT_S = new JoystickAxis(joystick, 3, deadband);
-
-		UP = () -> joystick.getPOV() == 0;
-		UP_RIGHT = () -> joystick.getPOV() == 45;
-		RIGHT = () -> joystick.getPOV() == 90;
-		DOWN_RIGHT = () -> joystick.getPOV() == 135;
-		DOWN = () -> joystick.getPOV() == 180;
-		DOWN_LEFT = () -> joystick.getPOV() == 225;
-		LEFT = () -> joystick.getPOV() == 270;
-		UP_LEFT = () -> joystick.getPOV() == 315;
-		CENTER = () -> joystick.getPOV() == -1;
+		UP = new Trigger(() -> joystick.getPOV() == 0);
+		UP_RIGHT = new Trigger(() -> joystick.getPOV() == 45);
+		RIGHT = new Trigger(() -> joystick.getPOV() == 90);
+		DOWN_RIGHT = new Trigger(() -> joystick.getPOV() == 135);
+		DOWN = new Trigger(() -> joystick.getPOV() == 180);
+		DOWN_LEFT = new Trigger(() -> joystick.getPOV() == 225);
+		LEFT = new Trigger(() -> joystick.getPOV() == 270);
+		UP_LEFT = new Trigger(() -> joystick.getPOV() == 315);
+		CENTER = new Trigger(() -> joystick.getPOV() == -1);
 	}
 }

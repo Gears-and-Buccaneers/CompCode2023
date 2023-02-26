@@ -37,26 +37,11 @@ public class SwerveModule {
 		angleEncoder = new CANCoder(canCoderID);
 		configAngleEncoder();
 
-		/* Angle Motor Config */
 		angleMotor = SwerveC.angleConfig.create(angleMotorID);
-
-		/* Drive Motor Config */
 		driveMotor = SwerveC.driveConfig.create(driveMotorID);
-
-		// updateAngleMotor();
 
 		// lastAngle = getIntegrated();
 	}
-
-	/*
-	 * public void updateAngleMotor() {
-	 * double absolutePosition = Conversions.degreesToFalcon(
-	 * getAbsolutePosition(),
-	 * SwerveC.angleGearRatio);
-	 * angleMotor.setSelectedSensorPosition(absolutePosition);
-	 * angleMotor.set(ControlMode.Position, absolutePosition);
-	 * }
-	 */
 
 	public void setToCurrent() {
 		angleMotor.set(ControlMode.Position, angleMotor.getSelectedSensorPosition());
@@ -86,10 +71,10 @@ public class SwerveModule {
 
 		double angle = getIntegrated() + (desiredState.angle.getDegrees() - getAbsolutePosition());
 
-		// angle = Math.abs(lastAngle - angle) <= 2 ? lastAngle : angle;
-
 		// Prevent rotating module if new angle is within 2 degrees of the last angle.
 		// Prevents Jittering.
+		// angle = Math.abs(lastAngle - angle) <= 2 ? lastAngle : angle;
+
 		angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle,
 				SwerveC.angleGearRatio));
 

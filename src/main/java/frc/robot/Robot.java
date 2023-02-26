@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Controls;
 import frc.robot.Constants.Pneumatics;
 import frc.robot.Constants.Vision;
-import frc.robot.Constants.Boom.Level;
+import frc.robot.Constants.BoomC.Level;
 
 import frc.robot.autos.*;
 import frc.robot.subsystems.*;
@@ -31,9 +31,10 @@ public class Robot extends TimedRobot {
 	// Comands
 	private final VisionTest gotoTag = new VisionTest(swerve, rightCamera, leftCamera, poseEstimator, 4);
 	// autos
+	PathPlannerAuto autos = new PathPlannerAuto(swerve);
+
 	SendableChooser<Command> chooser = new SendableChooser<>();
-	private final Command exampleAuto = new exampleAuto(swerve);
-	private final Command PathPlannerAuto = new PathPlannerTesting(swerve);
+	private final Command exampleAuto = new ExampleAuto(swerve);
 
 	private Command autonomousCommand;
 
@@ -57,7 +58,8 @@ public class Robot extends TimedRobot {
 		// Setup autos picker
 		chooser.setDefaultOption("None", null);
 		chooser.addOption("Coded Trajectory", exampleAuto);
-		chooser.addOption("PathPlannerAuto", PathPlannerAuto);
+
+		autos.addAll(chooser);
 
 		SmartDashboard.putData("Auto Path", chooser);
 
