@@ -37,7 +37,7 @@ public class goStraight extends SequentialCommandGroup {
 		SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
 				Swerve::getPose, // Pose2d supplier
 				Swerve::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
-				Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
+				Constants.SwerveConst.swerveKinematics, // SwerveDriveKinematics
 				new PIDConstants(.7, 0.0, 0.2), // PID constants to correct for translation error (used to create the X
 				// and Y PID controllers)
 				new PIDConstants(1, 0.0, 0.1), // PID constants to correct for rotation error (used to create the

@@ -5,7 +5,10 @@ import java.io.File;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -32,10 +35,17 @@ public final class Constants {
 	}
 
 	public static final class Vision {
-		public static final String cameraName = "photonvision";
+		public static final String leftCameraName = "leftCam";
+		public static final Transform3d robotToLeftCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); 
+		public static final Transform3d leftCamToRobot = robotToLeftCam.inverse();
+		//Cam mounted facing forward, half a meter forward of center, half a meter up from center.
+		public static final String rightCameraName = "rightCam";
+		public static final Transform3d robotToRightCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); 
+		public static final Transform3d rightCamToRobot = robotToRightCam.inverse();
+		//Cam mounted facing forward, half a meter forward of center, half a meter up from center.
 	}
 
-	public static final class Swerve {
+	public static final class SwerveConst {
 		public static final boolean openLoop = true;
 
 		public static final int pigeonID = 24;
