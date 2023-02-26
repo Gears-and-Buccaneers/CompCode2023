@@ -141,13 +141,13 @@ public class VisionTest extends CommandBase {
 			/*
 			 * PhotonPipelineResult leftResult = leftCamera.getLatestResult();
 			 * PhotonPipelineResult rightResult = leftCamera.getLatestResult();
-			 * 
+			 *
 			 * List<PhotonTrackedTarget> leftTargets = leftResult.getTargets();
 			 * List<PhotonTrackedTarget> rightTargets = rightResult.getTargets();
-			 * 
+			 *
 			 * boolean hasLeftTarget = leftResult.hasTargets();
 			 * boolean hasRightTarget = rightResult.hasTargets();
-			 * 
+			 *
 			 * ArrayList<Integer> leftTargetsFiducialId = new ArrayList<Integer>();
 			 * if (hasLeftTarget) {
 			 * for (PhotonTrackedTarget leftTarget : leftTargets) {
@@ -160,15 +160,15 @@ public class VisionTest extends CommandBase {
 			 * rightTargetsFiducialId.add(rightTarget.getFiducialId());
 			 * }
 			 * }
-			 * 
+			 *
 			 * double speed = 0;
 			 * Transform3d test = rightTargets.get(0).getBestCameraToTarget();
-			 * 
+			 *
 			 * //PhotonUtils.
 			 * // result.getBestTarget().getFiducialId()
 			 * if (hasLeftTarget)
 			 * speed = -turnController.calculate(leftTargets.get(0).getYaw(), 0);
-			 * 
+			 *
 			 * swerve.drive(new Translation2d(), speed * 0.75, false, SwerveConst.openLoop);
 			 */
 		}
@@ -184,7 +184,7 @@ public class VisionTest extends CommandBase {
  * robotPose2d.getY(),
  * 0.0,
  * new Rotation3d(0.0, 0.0, robotPose2d.getRotation().getRadians()));
- * 
+ *
  * var photonRes = photonCamera.getLatestResult();
  * if (photonRes.hasTargets()) {
  * // Find the tag we want to chase
@@ -197,24 +197,24 @@ public class VisionTest extends CommandBase {
  * var target = targetOpt.get();
  * // This is new target data, so recalculate the goal
  * lastTarget = target;
- * 
+ *
  * // Transform the robot's pose to find the camera's pose
  * var cameraPose = robotPose.transformBy(ROBOT_TO_CAMERA);
- * 
+ *
  * // Trasnform the camera's pose to the target's pose
  * var camToTarget = target.getBestCameraToTarget();
  * var targetPose = cameraPose.transformBy(camToTarget);
- * 
+ *
  * // Transform the tag's pose to set our goal
  * var goalPose = targetPose.transformBy(TAG_TO_GOAL).toPose2d();
- * 
+ *
  * // Drive
  * xController.setGoal(goalPose.getX());
  * yController.setGoal(goalPose.getY());
  * omegaController.setGoal(goalPose.getRotation().getRadians());
  * }
  * }
- * 
+ *
  * if (lastTarget == null) {
  * // No target has been visible
  * drivetrainSubsystem.stop();
@@ -224,28 +224,28 @@ public class VisionTest extends CommandBase {
  * if (xController.atGoal()) {
  * xSpeed = 0;
  * }
- * 
+ *
  * var ySpeed = yController.calculate(robotPose.getY());
  * if (yController.atGoal()) {
  * ySpeed = 0;
  * }
- * 
+ *
  * var omegaSpeed =
  * omegaController.calculate(robotPose2d.getRotation().getRadians());
  * if (omegaController.atGoal()) {
  * omegaSpeed = 0;
  * }
- * 
+ *
  * drivetrainSubsystem.drive(
  * ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, omegaSpeed,
  * robotPose2d.getRotation()));
  * }
  * }
- * 
+ *
  * @Override
  * public void end(boolean interrupted) {
  * drivetrainSubsystem.stop();
  * }
- * 
+ *
  * }
  */

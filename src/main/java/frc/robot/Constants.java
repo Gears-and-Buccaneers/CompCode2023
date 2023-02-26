@@ -52,6 +52,8 @@ public final class Constants {
 	public static final class SwerveConst {
 		public static final boolean openLoop = true;
 
+		public static final double nominalVoltage = 12;
+
 		public static final int pigeonID = 24;
 		public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 

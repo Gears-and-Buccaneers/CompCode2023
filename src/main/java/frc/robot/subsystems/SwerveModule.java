@@ -74,7 +74,7 @@ public class SwerveModule {
 			driveMotor.set(ControlMode.PercentOutput, percentOutput);
 		} else {
 			// double referenceVelocity = desiredState.speedMetersPerSecond;
-			var arbFeedForward = feedforward.calculate(desiredState.speedMetersPerSecond) / SwerveConst.nominalVoltage;
+			double arbFeedForward = feedforward.calculate(desiredState.speedMetersPerSecond) / SwerveConst.nominalVoltage;
 			driveMotor.set(
 					TalonFXControlMode.Velocity,
 					desiredState.speedMetersPerSecond
