@@ -17,7 +17,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.Boom.Level;
 
 public class Boom extends SubsystemBase {
-	public TalonSRX controller = new TalonSRX(Constants.armControllerId);
+	public TalonSRX controller = new TalonSRX(Constants.Boom.controllerId);
 	public PIDController pid = new PIDController(0.5, 0, .01);
 	public Encoder encoder = new Encoder(2, 3);
 

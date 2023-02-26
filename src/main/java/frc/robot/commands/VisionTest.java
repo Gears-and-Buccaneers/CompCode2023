@@ -11,7 +11,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.Constants.SwerveConst;
+import frc.robot.Constants.SwerveC;
 import frc.robot.Constants.Vision;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Swerve;
@@ -136,7 +136,7 @@ public class VisionTest extends CommandBase {
 					new Translation2d(xSpeed, ySpeed),
 					turnSpeed,
 					true,
-					SwerveConst.openLoop);
+					SwerveC.openLoop);
 
 			/*
 			 * PhotonPipelineResult leftResult = leftCamera.getLatestResult();

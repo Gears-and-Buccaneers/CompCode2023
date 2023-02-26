@@ -1,6 +1,7 @@
 package frc.robot.autos;
 
-import frc.robot.Constants;
+import frc.robot.Constants.AutoC;
+import frc.robot.Constants.SwerveC;
 import frc.robot.subsystems.Swerve;
 
 import java.util.List;
@@ -20,9 +21,9 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 public class exampleAuto extends SequentialCommandGroup {
 	public exampleAuto(Swerve s_Swerve) {
 		TrajectoryConfig config = new TrajectoryConfig(
-				Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-				Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-				.setKinematics(Constants.SwerveConst.swerveKinematics);
+				AutoC.kMaxSpeedMetersPerSecond,
+				AutoC.kMaxAccelerationMetersPerSecondSquared)
+				.setKinematics(SwerveC.swerveKinematics);
 
 		// An example trajectory to follow. All units in meters.
 		Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
@@ -35,15 +36,15 @@ public class exampleAuto extends SequentialCommandGroup {
 				config);
 
 		var thetaController = new ProfiledPIDController(
-				Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+				AutoC.kPThetaController, 0, 0, AutoC.kThetaControllerConstraints);
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
 		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
 				exampleTrajectory,
 				s_Swerve::getPose,
-				Constants.SwerveConst.swerveKinematics,
-				new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-				new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+				SwerveC.swerveKinematics,
+				new PIDController(AutoC.kPXController, 0, 0),
+				new PIDController(AutoC.kPYController, 0, 0),
 				thetaController,
 				s_Swerve::setModuleStates,
 				s_Swerve);

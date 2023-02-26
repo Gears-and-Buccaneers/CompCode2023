@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.SwerveConst;;
+import frc.robot.Constants.SwerveC;;
 
 public class PoseEstimator extends SubsystemBase {
 
@@ -46,7 +46,7 @@ public class PoseEstimator extends SubsystemBase {
 		this.swerve = swerve;
 
 		ShuffleboardTab tab = Shuffleboard.getTab("Vision");
-		swervePoseEstimator = new SwerveDrivePoseEstimator(SwerveConst.swerveKinematics, swerve.getYaw(),
+		swervePoseEstimator = new SwerveDrivePoseEstimator(SwerveC.swerveKinematics, swerve.getYaw(),
 				swerve.getPos(), new Pose2d());
 
 		tab.addString("Pose", this::getFomattedPose).withPosition(0, 0).withSize(2, 0);

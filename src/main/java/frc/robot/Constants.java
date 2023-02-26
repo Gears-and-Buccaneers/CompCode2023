@@ -22,8 +22,6 @@ import frc.robot.subsystems.SwerveModule;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
 public final class Constants {
-	public static final int armControllerId = 20;
-
 	public static final class State {
 		public static final File file = new File(Filesystem.getDeployDirectory(), "robot.scxml");
 		public static final String namespace = "http://dawsonschool.org/robotics/2972";
@@ -49,7 +47,7 @@ public final class Constants {
 		// from center.
 	}
 
-	public static final class SwerveConst {
+	public static final class SwerveC {
 		public static final boolean openLoop = true;
 
 		public static final double nominalVoltage = 12;
@@ -115,6 +113,8 @@ public final class Constants {
 		public static final double pidDeadband = 0.01;
 		public static final int id = 2;
 
+		public static final int controllerId = 20;
+
 		public enum Level {
 			BOTTOM(1, true),
 			MIDDLE(10, true),
@@ -144,7 +144,7 @@ public final class Constants {
 		public static final int reverseId = 1;
 	}
 
-	public static final class AutoConstants {
+	public static final class AutoC {
 		public static final double kMaxSpeedMetersPerSecond = 3;
 		public static final double kMaxAccelerationMetersPerSecondSquared = 3;
 		public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
