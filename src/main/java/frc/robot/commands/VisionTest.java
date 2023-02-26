@@ -52,13 +52,14 @@ public class VisionTest extends CommandBase {
       new Transform3d(
           new Translation3d(1.5, 0.0, 0.0),
           new Rotation3d(0.0, 0.0, Math.PI));
-	public int tag = 0;
+	public int tagId = 0;
 
-	public VisionTest(Swerve swerve, PhotonCamera rightCamera, PhotonCamera leftCamera, PoseEstimator poseEstimator) {
+	public VisionTest(Swerve swerve, PhotonCamera rightCamera, PhotonCamera leftCamera, PoseEstimator poseEstimator, int tagId) {
 		this.swerve = swerve;
 		this.leftCamera = leftCamera;//new PhotonCamera(Vision.leftCameraName);
 		this.rightCamera = rightCamera;//new PhotonCamera(Vision.leftCameraName);
 		this.poseEstimator = poseEstimator;
+		this.tagId = tagId;
 
 		xController.setTolerance(0.2);
 		yController.setTolerance(0.2);
@@ -91,7 +92,7 @@ public class VisionTest extends CommandBase {
 		if (photonRes.hasTargets()) {
 			// Find the tag we want to chase
 			Optional<PhotonTrackedTarget>  targetOpt = photonRes.getTargets().stream()
-				.filter(target -> target.getFiducialId() == tag)
+				.filter(target -> target.getFiducialId() == tagId)
 				.filter(target -> !target.equals(lastTarget) && target.getPoseAmbiguity() <= .2 && target.getPoseAmbiguity() != -1)
 				.findFirst();
 			if (targetOpt.isPresent()) {

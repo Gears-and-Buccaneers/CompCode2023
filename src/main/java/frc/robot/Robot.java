@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
 	private final PoseEstimator poseEstimator = new PoseEstimator(leftCamera, swerve);
 
 	// Comands
-	private final VisionTest gotoTag = new VisionTest(swerve, rightCamera, leftCamera, poseEstimator);
+	private final VisionTest gotoTag = new VisionTest(swerve, rightCamera, leftCamera, poseEstimator, 4);
 	// autos
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	private final Command exampleAuto = new exampleAuto(swerve);
