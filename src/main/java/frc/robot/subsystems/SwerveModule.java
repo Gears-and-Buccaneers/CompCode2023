@@ -1,14 +1,17 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.math.CTREModuleState;
 import frc.lib.math.Conversions;
 import frc.robot.Constants;
+import frc.robot.Constants.SwerveConst;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -23,6 +26,8 @@ public class SwerveModule {
 	private CANCoder angleEncoder;
 	// public double lastAngle;
 	private double angleOffset;
+
+	private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.6716, 2.5913, 0.19321);
 
 	public SwerveModule(int moduleNumber, int driveMotorID, int angleMotorID, int canCoderID, double angleOffset) {
 		this.moduleNumber = moduleNumber;
@@ -68,12 +73,15 @@ public class SwerveModule {
 			double percentOutput = desiredState.speedMetersPerSecond / Constants.SwerveConst.maxSpeed;
 			driveMotor.set(ControlMode.PercentOutput, percentOutput);
 		} else {
-			double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond,
-					Constants.SwerveConst.wheelCircumference,
-					Constants.SwerveConst.driveGearRatio);
-
-			driveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward,
-					Constants.SwerveConst.driveFeedforward.calculate(desiredState.speedMetersPerSecond));
+			// double referenceVelocity = desiredState.speedMetersPerSecond;
+			var arbFeedForward = feedforward.calculate(desiredState.speedMetersPerSecond) / SwerveConst.nominalVoltage;
+			driveMotor.set(
+					TalonFXControlMode.Velocity,
+					desiredState.speedMetersPerSecond
+							/ (Math.PI * SwerveConst.wheelDiameter * SwerveConst.driveGearRatio / 2048 * 10),
+					DemandType.ArbitraryFeedForward,
+					arbFeedForward);
+			// driveMotor.feed();
 		}
 
 		double angle = getIntegrated() + (desiredState.angle.getDegrees() - getAbsolutePosition());

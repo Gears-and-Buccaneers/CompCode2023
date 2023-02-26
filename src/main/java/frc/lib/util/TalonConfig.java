@@ -17,6 +17,10 @@ public class TalonConfig extends TalonFXConfiguration {
 		super.slot0.kD = kD;
 		super.slot0.kF = kF;
 
+		super.voltageCompSaturation = 12;
+		super.supplyCurrLimit.currentLimit = 80;
+		super.supplyCurrLimit.enable = true;
+
 		super.supplyCurrLimit = lim;
 		super.initializationStrategy = SensorInitializationStrategy.BootToZero;
 
@@ -40,6 +44,9 @@ public class TalonConfig extends TalonFXConfiguration {
 
 		motor.setInverted(invert);
 		motor.setNeutralMode(neutralMode);
+		motor.enableVoltageCompensation(true);
+
+		motor.setSensorPhase(true);
 
 		return motor;
 	}
