@@ -73,7 +73,7 @@ public final class Constants {
 
 		/** Swerve drive motor configs */
 		public static final TalonConfig driveConfig = new TalonConfig(new PIDConstants(0.1, 0.0, 12.0), 0.0, false,
-				NeutralMode.Brake,
+				NeutralMode.Coast,
 				new SupplyCurrentLimitConfiguration(true, 35, 60, 0.1), 0.25, 0.0);
 
 		/* Drive Motor Characterization Values */
@@ -81,9 +81,9 @@ public final class Constants {
 				0.27 / 12);
 
 		/* Swerve Profiling Values */
-		public static final double maxSpeed = 2.5; // meters per second
+		public static final double maxSpeed = 0.5; // meters per second
 		public static final double maxSpeedBoost = 4.5; // meters per second
-		public static final double maxAngularVelocity = 11.5;
+		public static final double maxAngularVelocity = 0.75;
 
 		/* Angle Encoder Invert */
 		public static final boolean canCoderInvert = false;
@@ -115,17 +115,18 @@ public final class Constants {
 	public static final class BoomC {
 		public static final double raiseDelay = 0.6;
 		public static final double pidDeadband = 0.01;
-		public static final int id = 2;
+		public static final int forwardId = 3;
+		public static final int reverseId = 4;
 
 		public static final int servoId = 4;
 
 		public static final int controllerId = 20;
 
 		public enum Level {
-			BOTTOM(1, true),
-			MIDDLE(10, true),
-			TOP(15, true),
-			INTAKE(0.5, true);
+			BOTTOM(0, true), // 10.825, 11.25, 11.25
+			MIDDLE(4, true), // 24, 25.825, 23.25, 26 / 12, 23.25, 26.75
+			TOP(8, true), // 37.75, 37.5, 38.75
+			INTAKE(0, false);
 
 			private final double length;
 			private final boolean raised;
@@ -146,8 +147,8 @@ public final class Constants {
 	}
 
 	public static final class Gripper {
-		public static final int forwardId = 0;
-		public static final int reverseId = 1;
+		public static final int forwardId = 1;
+		public static final int reverseId = 2;
 	}
 
 	public static final class AutoC {

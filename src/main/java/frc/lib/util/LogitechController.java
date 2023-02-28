@@ -18,13 +18,13 @@ public final class LogitechController {
 	public LogitechController(int port) {
 		Joystick joystick = new Joystick(port);
 
-		LS_X = new JoystickAxis(joystick, 0, deadband);
-		LS_Y = new JoystickAxis(joystick, 1, deadband);
-		RS_X = new JoystickAxis(joystick, 4, deadband);
-		RS_Y = new JoystickAxis(joystick, 5, deadband);
+		LS_X = new JoystickAxis(joystick, 0, deadband, 3);
+		LS_Y = new JoystickAxis(joystick, 1, deadband, 3);
+		RS_X = new JoystickAxis(joystick, 4, deadband, 3);
+		RS_Y = new JoystickAxis(joystick, 5, deadband, 3);
 
-		LT_S = new JoystickAxis(joystick, 2, deadband);
-		RT_S = new JoystickAxis(joystick, 3, deadband);
+		LT_S = new JoystickAxis(joystick, 2, deadband, 3);
+		RT_S = new JoystickAxis(joystick, 3, deadband, 3);
 
 		A = new JoystickButton(joystick, 1);
 		B = new JoystickButton(joystick, 2);

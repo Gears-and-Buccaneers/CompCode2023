@@ -55,7 +55,7 @@ public class SwerveModule {
 		desiredState = CTREModuleState.optimize(desiredState, Rotation2d.fromDegrees(getAbsolutePosition()));
 
 		if (isOpenLoop) {
-			double percentOutput = desiredState.speedMetersPerSecond / SwerveC.maxSpeed;
+			double percentOutput = desiredState.speedMetersPerSecond * SwerveC.maxSpeed;
 			driveMotor.set(ControlMode.PercentOutput, percentOutput);
 		} else {
 			// double referenceVelocity = desiredState.speedMetersPerSecond;

@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 public class PathPlannerAuto {
-	List<PathPlannerTrajectory> pathGroup;
-
 	// This is just an example event map. It would be better to have a constant,
 	// global event map in your code that will be used by all path following
 	// commands.
@@ -56,7 +54,7 @@ public class PathPlannerAuto {
 
 	public CommandBase get(String name) {
 
-		pathGroup = PathPlanner.loadPathGroup(name,
+		List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(name,
 				AutoC.constraints);
 
 		return autoBuilder.fullAuto(pathGroup);

@@ -19,9 +19,9 @@ public class TeleopSwerve extends CommandBase {
 	public void execute() {
 		swerve.drive(
 				new Translation2d(
-						Controls.driver.LS_X.get(),
-						Controls.driver.LS_Y.get())
-						.times(SwerveC.maxSpeedBoost)
+						Controls.driver.LS_Y.get(),
+						Controls.driver.LS_X.get())
+						// .times(SwerveC.maxSpeedBoost)
 						.times(Controls.driver.LT_S.get() >= .5 ? Controls.driver.LT_S.get() : .5),
 				Controls.driver.RS_X.get() * SwerveC.maxAngularVelocity,
 				Controls.driver.LB.getAsBoolean(),

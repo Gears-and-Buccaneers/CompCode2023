@@ -3,6 +3,7 @@ package frc.robot;
 import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -31,7 +32,7 @@ public class Robot extends TimedRobot {
 	// Comands
 	private final VisionTest gotoTag = new VisionTest(swerve, rightCamera, leftCamera, poseEstimator, 4);
 	// autos
-	PathPlannerAuto autos = new PathPlannerAuto(swerve);
+	// PathPlannerAuto autos = new PathPlannerAuto(swerve);
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	private final Command exampleAuto = new ExampleAuto(swerve);
@@ -40,26 +41,27 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-		// swerve.setDefaultCommand(new TeleopSwerve(swerve));
+		swerve.setDefaultCommand(new TeleopSwerve(swerve));
 
 		// Configure the button bindings
-		Controls.driver.BACK.whileTrue(swerve.runOnce(swerve::zeroGyro));// .andThen(swerve.runOnce(swerve::updateAngleMotors)));
-		// Controls.driver.X.whileTrue(new VisionTest(swerve));
-		// Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
-		Controls.driver.X.whileTrue(arm.setTo(Level.BOTTOM));
-		Controls.driver.Y.whileTrue(arm.setTo(Level.TOP));
-		Controls.driver.A.whileTrue(gotoTag);
+		Controls.driver.BACK.whileTrue(swerve.runOnce(swerve::zeroGyro));
 
-		// Controls.driver.Y.whileTrue(new SetAngle(swerve, 0));
-		// Controls.driver.B.whileTrue(new SetAngle(swerve, 90));
-		// Controls.driver.A.whileTrue(new SetAngle(swerve, 180));
-		// Controls.driver.X.whileTrue(new SetAngle(swerve, 270));
+		Controls.driver.UP.whileTrue(arm.setTo(Level.INTAKE));
+		Controls.driver.RIGHT.whileTrue(arm.setTo(Level.BOTTOM));
+		Controls.driver.DOWN.whileTrue(arm.setTo(Level.MIDDLE));
+		Controls.driver.LEFT.whileTrue(arm.setTo(Level.TOP));
+
+		Controls.driver.X.whileTrue(gotoTag);
+		Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
+
+		Controls.driver.A.whileTrue(gripper.runOnce(() -> gripper.set(Value.kOff)));
+		Controls.driver.B.whileTrue(gripper.runOnce(() -> gripper.set(Value.kReverse)));
 
 		// Setup autos picker
 		chooser.setDefaultOption("None", null);
 		chooser.addOption("Coded Trajectory", exampleAuto);
 
-		autos.addAll(chooser);
+		// autos.addAll(chooser);
 
 		SmartDashboard.putData("Auto Path", chooser);
 
