@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -30,8 +29,7 @@ public class Boom extends SubsystemBase {
 			BoomC.forwardId, BoomC.reverseId);
 
 	boolean raised = pneumatic.get() == Value.kForward;
-
-	Servo rachet = new Servo(BoomC.servoId);
+	boolean rachetReleased = false;
 
 	public Boom() {
 		controller.setNeutralMode(NeutralMode.Brake);
@@ -39,12 +37,10 @@ public class Boom extends SubsystemBase {
 	}
 
 	public CommandBase setTo(Level level) {
-		CommandBase l = this.runOnce(() -> pid.setSetpoint(level.getLength()))
+		CommandBase cmd = this.runOnce(() -> pid.setSetpoint(level.getLength()))
 				.andThen(new WaitUntilCommand(pid::atSetpoint));
 
-		// if (raised == level.isRaised())
-		// return l;
-
+		// if (raised != level.isRaised()) {
 		CommandBase r = runOnce(() -> {
 			System.out.println("r: setting the pneumatic to " + level.isRaised());
 			pneumatic.set(level.isRaised() ? Value.kForward : Value.kReverse);
@@ -52,7 +48,15 @@ public class Boom extends SubsystemBase {
 				new WaitCommand(BoomC.raiseDelay),
 				runOnce(() -> raised = level.isRaised()));
 
-		return level.isRaised() ? r.andThen(l) : l.andThen(r);
+		cmd = level.isRaised() ? r.andThen(cmd) : cmd.andThen(r);
+		// }
+
+		if (!rachetReleased) {
+			pid.setSetpoint(-0.25);
+			cmd = new WaitUntilCommand(pid::atSetpoint).andThen(cmd);
+		}
+
+		return cmd;
 	}
 
 	public double getEncoder() {
@@ -63,8 +67,6 @@ public class Boom extends SubsystemBase {
 		double output = -pid.calculate(getEncoder());
 		output = Math.abs(output) > 0.5 ? output / Math.abs(output) * 0.5 : output;
 		controller.set(ControlMode.PercentOutput, output);
-
-		rachet.set(SmartDashboard.getNumber("Boom servo", 0));
 
 		SmartDashboard.putBoolean("Boom raised", raised);
 		SmartDashboard.putBoolean("Boom within tolerance", pid.atSetpoint());
