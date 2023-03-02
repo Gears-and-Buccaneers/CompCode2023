@@ -12,15 +12,10 @@ public class Gripper extends SubsystemBase {
 			PneumaticsModuleType.CTREPCM,
 			Constants.Gripper.forwardId, Constants.Gripper.reverseId);
 
-	public void set(Value s) {
-		gripper.set(s);
-	}
-
 	public void toggle() {
-		gripper.toggle();
-	}
-
-	public Value get() {
-		return gripper.get();
+		if (gripper.get() == Value.kForward)
+			gripper.set(Value.kReverse);
+		else
+			gripper.set(Value.kForward);
 	}
 }
