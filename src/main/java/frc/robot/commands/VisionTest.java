@@ -11,8 +11,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.Constants.SwerveC;
-import frc.robot.Constants.Vision;
+import frc.robot.Constants.kSwerve;
+import frc.robot.Constants.kVision;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Swerve;
 
@@ -96,7 +96,7 @@ public class VisionTest extends CommandBase {
 				lastTarget = target;
 
 				// Transform the robot's pose to find the camera's pose
-				Pose3d cameraPose = robotPose.transformBy(Vision.leftCamRelative);
+				Pose3d cameraPose = robotPose.transformBy(kVision.leftCamRelative);
 
 				// Trasnform the camera's pose to the target's pose
 				Transform3d camToTarget = target.getBestCameraToTarget();
@@ -132,7 +132,7 @@ public class VisionTest extends CommandBase {
 					new Translation2d(xSpeed, ySpeed),
 					turnSpeed,
 					true,
-					SwerveC.openLoop);
+					kSwerve.openLoop);
 
 			/*
 			 * PhotonPipelineResult leftResult = leftCamera.getLatestResult();

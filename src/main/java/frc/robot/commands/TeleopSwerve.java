@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-import frc.robot.Constants.SwerveC;
+import frc.robot.Constants.kSwerve;
 import frc.robot.Constants.Controls;
 import frc.robot.subsystems.Swerve;
 
@@ -20,11 +20,9 @@ public class TeleopSwerve extends CommandBase {
 		swerve.drive(
 				new Translation2d(
 						Controls.driver.LS_Y.get(),
-						Controls.driver.LS_X.get())
-						// .times(SwerveC.maxSpeedBoost)
-						.times(Controls.driver.LT_S.get() >= .5 ? Controls.driver.LT_S.get() : .5),
-				Controls.driver.RS_X.get() * SwerveC.maxAngularVelocity,
+						Controls.driver.LS_X.get()),
+				Controls.driver.RS_X.get() * kSwerve.maxAngularVelocity,
 				Controls.driver.LB.getAsBoolean(),
-				SwerveC.openLoop);
+				kSwerve.openLoop);
 	}
 }

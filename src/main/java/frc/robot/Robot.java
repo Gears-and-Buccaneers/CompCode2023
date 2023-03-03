@@ -9,9 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Constants.Controls;
-import frc.robot.Constants.Pneumatics;
-import frc.robot.Constants.Vision;
-import frc.robot.Constants.BoomC.Level;
+import frc.robot.Constants.kVision;
+import frc.robot.Constants.kBoom.Level;
 
 import frc.robot.autos.*;
 import frc.robot.subsystems.*;
@@ -19,8 +18,8 @@ import frc.robot.commands.*;
 
 public class Robot extends TimedRobot {
 	// Cameras
-	private final PhotonCamera leftCamera = new PhotonCamera(Vision.leftCameraName);
-	private final PhotonCamera rightCamera = new PhotonCamera(Vision.rightCameraName);
+	private final PhotonCamera leftCamera = new PhotonCamera(kVision.leftCameraName);
+	private final PhotonCamera rightCamera = new PhotonCamera(kVision.rightCameraName);
 
 	// Subsystems
 	private final Swerve swerve = new Swerve();
@@ -33,6 +32,7 @@ public class Robot extends TimedRobot {
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	private Command autonomousCommand;
+	PathPlannerAuto pathPlanner = new PathPlannerAuto(swerve);
 
 	@Override
 	public void robotInit() {
@@ -51,15 +51,13 @@ public class Robot extends TimedRobot {
 
 		// Setup autos picker
 		chooser.setDefaultOption("None", null);
+
 		chooser.addOption("Coded Trajectory", new ExampleAuto(swerve));
 
-		PathPlannerAuto.addAll(swerve, chooser);
+		chooser.addOption("Straight", pathPlanner.get("GO Straight"));
+		chooser.addOption("Testing", pathPlanner.get("PathPlanerSwerve"));
 
 		SmartDashboard.putData("Auto Path", chooser);
-
-		// set up compresser
-		// Pneumatics.compressor.enableHybrid(110, 120);
-		SmartDashboard.putNumber("compressor PSI", Pneumatics.compressor.getPressure());
 	}
 
 	@Override

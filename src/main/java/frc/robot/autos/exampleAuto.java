@@ -1,7 +1,7 @@
 package frc.robot.autos;
 
-import frc.robot.Constants.AutoC;
-import frc.robot.Constants.SwerveC;
+import frc.robot.Constants.kAuto;
+import frc.robot.Constants.kSwerve;
 import frc.robot.subsystems.Swerve;
 
 import java.util.List;
@@ -26,18 +26,18 @@ public class ExampleAuto extends SequentialCommandGroup {
 				List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
 				// End 3 meters straight ahead of where we started, facing forward
 				new Pose2d(3, 0, new Rotation2d(0)),
-				AutoC.config);
+				kAuto.config);
 
 		var thetaController = new ProfiledPIDController(
-				AutoC.kPThetaController, 0, 0, AutoC.kThetaControllerConstraints);
+				kAuto.kPThetaController, 0, 0, kAuto.kThetaControllerConstraints);
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
 		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
 				exampleTrajectory,
 				swerve::getPose,
-				SwerveC.swerveKinematics,
-				new PIDController(AutoC.kPXController, 0, 0),
-				new PIDController(AutoC.kPYController, 0, 0),
+				kSwerve.swerveKinematics,
+				new PIDController(kAuto.kPXController, 0, 0),
+				new PIDController(kAuto.kPYController, 0, 0),
 				thetaController,
 				swerve::setModuleStates,
 				swerve);

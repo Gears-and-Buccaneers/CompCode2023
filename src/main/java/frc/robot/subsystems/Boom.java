@@ -15,18 +15,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-import frc.robot.Constants.BoomC;
+import frc.robot.Constants.kBoom;
 import frc.robot.Constants.Pneumatics;
-import frc.robot.Constants.BoomC.Level;
+import frc.robot.Constants.kBoom.Level;
 
 public class Boom extends SubsystemBase {
-	TalonSRX controller = new TalonSRX(BoomC.controllerId);
+	TalonSRX controller = new TalonSRX(kBoom.controllerId);
 	PIDController pid = new PIDController(0.5, 0, .02);
 	Encoder encoder = new Encoder(2, 3);
 
 	DoubleSolenoid pneumatic = new DoubleSolenoid(
 			Pneumatics.compressorId, PneumaticsModuleType.CTREPCM,
-			BoomC.forwardId, BoomC.reverseId);
+			kBoom.forwardId, kBoom.reverseId);
 
 	boolean raised = pneumatic.get() == Value.kForward;
 	boolean rachetReleased = false;
@@ -36,24 +36,23 @@ public class Boom extends SubsystemBase {
 		pid.setTolerance(0.5);
 	}
 
-	public CommandBase setTo(Level level) {
-		CommandBase cmd = this.runOnce(() -> pid.setSetpoint(level.getLength()))
+	public CommandBase setTo(Level target) {
+		CommandBase cmd = this.runOnce(() -> pid.setSetpoint(target.getLength()))
 				.andThen(new WaitUntilCommand(pid::atSetpoint));
 
-		// if (raised != level.isRaised()) {
-		CommandBase r = runOnce(() -> {
-			System.out.println("r: setting the pneumatic to " + level.isRaised());
-			pneumatic.set(level.isRaised() ? Value.kForward : Value.kReverse);
-		}).andThen(
-				new WaitCommand(BoomC.raiseDelay),
-				runOnce(() -> raised = level.isRaised()));
+		if (raised != target.isRaised()) {
+			CommandBase r = runOnce(() -> pneumatic.set(target.isRaised() ? Value.kForward : Value.kReverse)).andThen(
+					new WaitCommand(kBoom.raiseDelay), runOnce(() -> raised = target.isRaised()));
 
-		cmd = level.isRaised() ? r.andThen(cmd) : cmd.andThen(r);
-		// }
+			cmd = target.isRaised() ? r.andThen(cmd) : cmd.andThen(r);
+			System.out.println("RAISING: " + (target.isRaised() ? "r->l" : "l->r"));
+		} else {
+			System.out.println("SKIPPING RAISE: " + raised + " -> " + target.isRaised());
+		}
 
 		if (!rachetReleased) {
-			pid.setSetpoint(-0.25);
-			cmd = new WaitUntilCommand(pid::atSetpoint).andThen(cmd);
+			pid.setSetpoint(-1);
+			cmd = new WaitCommand(0.1).andThen(this.runOnce(() -> rachetReleased = true), cmd);
 		}
 
 		return cmd;
@@ -70,8 +69,10 @@ public class Boom extends SubsystemBase {
 
 		SmartDashboard.putBoolean("Boom raised", raised);
 		SmartDashboard.putBoolean("Boom within tolerance", pid.atSetpoint());
-		SmartDashboard.putNumber("Boom output", output);
 		SmartDashboard.putNumber("Boom Encoder", getEncoder());
+		SmartDashboard.putNumber("Boom setpoint", pid.getSetpoint());
+		SmartDashboard.putNumber("Boom output", output);
+		SmartDashboard.putBoolean("Rachet released", rachetReleased);
 	}
 
 }

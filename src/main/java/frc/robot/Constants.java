@@ -13,9 +13,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import frc.lib.util.Camera;
 import frc.lib.util.LogitechController;
 import frc.lib.util.TalonConfig;
 import frc.robot.subsystems.SwerveModule;
@@ -35,7 +34,18 @@ public final class Constants {
 		public static final LogitechController operator = new LogitechController(1);
 	}
 
-	public static final class Vision {
+	public static final class kVision {
+		public static final Camera[] cameras = {
+				new Camera("leftCam", new Transform3d(
+						new Translation3d(0.5, 0.0, 0.5),
+						new Rotation3d(0, 0, 0))),
+				new Camera("rightCam", new Transform3d(
+						new Translation3d(0.5, 0.0, 0.5),
+						new Rotation3d(0, 0, 0)))
+		};
+
+		public static final double maxAmbiguity = 0.2;
+
 		// Cam mounted facing forward, half a meter forward of center, half a meter up
 		// from center.
 		public static final String leftCameraName = "leftCam";
@@ -49,7 +59,7 @@ public final class Constants {
 				new Rotation3d(0, 0, 0));
 	}
 
-	public static final class SwerveC {
+	public static final class kSwerve {
 		public static final boolean openLoop = true;
 
 		public static final double nominalVoltage = 12;
@@ -81,7 +91,7 @@ public final class Constants {
 				0.27 / 12);
 
 		/* Swerve Profiling Values */
-		public static final double maxSpeed = 0.5; // meters per second
+		public static final double maxSpeed = 0.8; // meters per second
 		public static final double maxSpeedBoost = 4.5; // meters per second
 		public static final double maxAngularVelocity = 0.75;
 
@@ -109,10 +119,9 @@ public final class Constants {
 
 	public static final class Pneumatics {
 		public static final int compressorId = 0;
-		public static Compressor compressor = new Compressor(compressorId, PneumaticsModuleType.CTREPCM);
 	}
 
-	public static final class BoomC {
+	public static final class kBoom {
 		public static final double raiseDelay = 0.6;
 		public static final double pidDeadband = 0.01;
 		public static final int forwardId = 3;
@@ -151,7 +160,7 @@ public final class Constants {
 		public static final int reverseId = 2;
 	}
 
-	public static final class AutoC {
+	public static final class kAuto {
 		public static final PathConstraints constraints = new PathConstraints(.5, 3);
 		public static final PIDConstants translation = new PIDConstants(0.7, 0.0, 0.2);
 		public static final PIDConstants rotation = new PIDConstants(1.0, 0.0, 0.1);
@@ -161,7 +170,7 @@ public final class Constants {
 		public static final double kPThetaController = .1;
 
 		public static final TrajectoryConfig config = new TrajectoryConfig(3, 3)
-				.setKinematics(SwerveC.swerveKinematics);
+				.setKinematics(kSwerve.swerveKinematics);
 
 		// Constraint for the motion profilied robot angle controller
 		public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
