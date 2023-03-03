@@ -13,9 +13,9 @@ public class Gripper extends SubsystemBase {
 			Constants.Gripper.forwardId, Constants.Gripper.reverseId);
 
 	public void toggle() {
-		if (gripper.get() == Value.kForward)
-			gripper.set(Value.kReverse);
-		else
+		if (gripper.get() == Value.kReverse)
 			gripper.set(Value.kForward);
+		else
+			gripper.set(Value.kReverse);
 	}
 }
