@@ -40,19 +40,14 @@ public class Boom extends SubsystemBase {
 		CommandBase cmd = this.runOnce(() -> pid.setSetpoint(target.getLength()))
 				.andThen(new WaitUntilCommand(pid::atSetpoint));
 
-		if (raised != target.isRaised()) {
-			CommandBase r = runOnce(() -> pneumatic.set(target.isRaised() ? Value.kForward : Value.kReverse)).andThen(
-					new WaitCommand(kBoom.raiseDelay), runOnce(() -> raised = target.isRaised()));
+		CommandBase r = runOnce(() -> pneumatic.set(target.isRaised() ? Value.kForward : Value.kReverse)).andThen(
+				new WaitCommand(kBoom.raiseDelay), runOnce(() -> raised = target.isRaised()));
 
-			cmd = target.isRaised() ? r.andThen(cmd) : cmd.andThen(r);
-			System.out.println("RAISING: " + (target.isRaised() ? "r->l" : "l->r"));
-		} else {
-			System.out.println("SKIPPING RAISE: " + raised + " -> " + target.isRaised());
-		}
+		cmd = target.isRaised() ? r.andThen(cmd) : cmd.andThen(r);
 
 		if (!rachetReleased) {
-			pid.setSetpoint(-1);
-			cmd = new WaitCommand(0.1).andThen(this.runOnce(() -> rachetReleased = true), cmd);
+			cmd = runOnce(() -> pid.setSetpoint(-1)).andThen(new WaitCommand(0.1), runOnce(() -> rachetReleased = true),
+					cmd);
 		}
 
 		return cmd;
@@ -64,7 +59,7 @@ public class Boom extends SubsystemBase {
 
 	public void periodic() {
 		double output = -pid.calculate(getEncoder());
-		output = Math.abs(output) > 0.5 ? output / Math.abs(output) * 0.5 : output;
+		output = Math.abs(output) > 0.8 ? output / Math.abs(output) * 0.8 : output;
 		controller.set(ControlMode.PercentOutput, output);
 
 		SmartDashboard.putBoolean("Boom raised", raised);
@@ -74,5 +69,4 @@ public class Boom extends SubsystemBase {
 		SmartDashboard.putNumber("Boom output", output);
 		SmartDashboard.putBoolean("Rachet released", rachetReleased);
 	}
-
 }

@@ -6,6 +6,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -21,7 +22,7 @@ public class Swerve extends SubsystemBase {
 	public Swerve() {
 		gyro = new PigeonIMU(kSwerve.pigeonID);
 		gyro.configFactoryDefault();
-		zeroGyro();
+		offsetGyro(180);
 
 		swerveOdometry = new SwerveDriveOdometry(kSwerve.swerveKinematics, getYaw(), getPos());
 	}
@@ -70,6 +71,10 @@ public class Swerve extends SubsystemBase {
 		gyro.setYaw(0);
 	}
 
+	public void offsetGyro(double angle) {
+		gyro.setYaw(angle);
+	}
+
 	public Rotation2d getYaw() {
 		return (kSwerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw())
 				: Rotation2d.fromDegrees(gyro.getYaw());
@@ -77,25 +82,26 @@ public class Swerve extends SubsystemBase {
 
 	public Rotation2d getPitch() {
 		return (kSwerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getPitch())
-				: Rotation2d.fromDegrees(gyro.getPitch());
+				: Rotation2d.fromDegrees(gyro.getRoll());
 	}
 
 	public Rotation2d getRoll() {
 		return (kSwerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getRoll())
-				: Rotation2d.fromDegrees(gyro.getRoll());
+				: Rotation2d.fromDegrees(gyro.getPitch());
 	}
 
 	@Override
 	public void periodic() {
 		swerveOdometry.update(getYaw(), getPos());
 
+		SmartDashboard.putNumber("Pitch",
+				Math.abs(MathUtil.inputModulus(getPitch().getDegrees(), -180, 180)));
+
 		for (SwerveModule mod : kSwerve.mods) {
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Cancoder", mod.getEncoder());
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Integrated", mod.getIntegrated());
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Velocity", mod.getVelocity());
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Absolute Position", mod.getAbsolutePosition());
-			// SmartDashboard.putNumber("Mod" + mod.moduleNumber + " last angle",
-			// mod.lastAngle);
 		}
 	}
 }

@@ -11,17 +11,18 @@ public final class LogitechController {
 
 	private static final double deadband = 0.05;
 
-	public final Trigger A, B, X, Y, LB, RB, BACK, START, LT, RT, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT,
+	public final Trigger A, B, X, Y, LB, RB, BACK, START, LT, RT, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT,
+			LEFT,
 			UP_LEFT, CENTER;
 	public final JoystickAxis LS_X, LS_Y, RS_X, RS_Y, LT_S, RT_S;
 
 	public LogitechController(int port) {
 		Joystick joystick = new Joystick(port);
 
-		LS_X = new JoystickAxis(joystick, 0, deadband, 3);
-		LS_Y = new JoystickAxis(joystick, 1, deadband, 3);
-		RS_X = new JoystickAxis(joystick, 4, deadband, 3);
-		RS_Y = new JoystickAxis(joystick, 5, deadband, 3);
+		LS_X = new JoystickAxis(joystick, 0, deadband, 2);
+		LS_Y = new JoystickAxis(joystick, 1, deadband, 2);
+		RS_X = new JoystickAxis(joystick, 4, deadband, 2);
+		RS_Y = new JoystickAxis(joystick, 5, deadband, 2);
 
 		LT_S = new JoystickAxis(joystick, 2, deadband, 3);
 		RT_S = new JoystickAxis(joystick, 3, deadband, 3);

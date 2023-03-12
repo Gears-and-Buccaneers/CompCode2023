@@ -25,10 +25,12 @@ public class Robot extends TimedRobot {
 	private final Swerve swerve = new Swerve();
 	private final Boom arm = new Boom();
 	private final Gripper gripper = new Gripper();
-	private final PoseEstimator poseEstimator = new PoseEstimator(leftCamera, swerve);
+	// private final PoseEstimator poseEstimator = new PoseEstimator(leftCamera,
+	// swerve);
 
-	// Comands
-	private final VisionTest gotoTag = new VisionTest(swerve, rightCamera, leftCamera, poseEstimator, 4);
+	// Commands
+	// private final VisionTest gotoTag = new VisionTest(swerve, rightCamera,
+	// leftCamera, poseEstimator, 4);
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	private Command autonomousCommand;
@@ -46,7 +48,6 @@ public class Robot extends TimedRobot {
 		Controls.driver.UP.onTrue(arm.setTo(Level.MIDDLE));
 		Controls.driver.RIGHT.onTrue(arm.setTo(Level.TOP));
 
-		Controls.driver.X.whileTrue(gotoTag);
 		Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
 
 		// Setup autos picker
@@ -56,6 +57,23 @@ public class Robot extends TimedRobot {
 
 		chooser.addOption("Straight", pathPlanner.get("GO Straight"));
 		chooser.addOption("Testing", pathPlanner.get("PathPlanerSwerve"));
+
+		chooser.addOption("Drop piece (TOP)", SimpleAuto.dropPiece(arm, gripper, Level.TOP));
+
+		chooser.addOption("Drop piece -> Auto-balance",
+				SimpleAuto.dropPiece(arm, gripper, Level.TOP).andThen(SimpleAuto.autoBalance(swerve)));
+
+		chooser.addOption("Drop piece (LOWER)", SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM));
+
+		chooser.addOption("Drop piece (LOWER) -> Auto-balance",
+				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM).andThen(SimpleAuto.autoBalance(swerve)));
+
+		chooser.addOption("drop (LOWER)->Go",
+				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM).andThen(SimpleAuto.go(swerve)));
+
+		chooser.addOption("drop->Go", SimpleAuto.dropPiece(arm, gripper, Level.TOP).andThen(SimpleAuto.go(swerve)));
+
+		chooser.addOption("Autobalance (UNTESTED)", SimpleAuto.autoBalanceUntested(swerve));
 
 		SmartDashboard.putData("Auto Path", chooser);
 	}

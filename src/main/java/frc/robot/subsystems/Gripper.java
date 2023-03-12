@@ -5,6 +5,7 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Gripper extends SubsystemBase {
@@ -17,5 +18,11 @@ public class Gripper extends SubsystemBase {
 			gripper.set(Value.kForward);
 		else
 			gripper.set(Value.kReverse);
+	}
+
+	@Override
+	public void periodic() {
+		SmartDashboard.putNumber("Gripper state",
+				gripper.get() == Value.kReverse ? -1 : (gripper.get() == Value.kOff ? 0 : 1));
 	}
 }

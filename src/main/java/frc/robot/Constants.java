@@ -83,7 +83,7 @@ public final class Constants {
 
 		/** Swerve drive motor configs */
 		public static final TalonConfig driveConfig = new TalonConfig(new PIDConstants(0.1, 0.0, 12.0), 0.0, false,
-				NeutralMode.Coast,
+				NeutralMode.Brake,
 				new SupplyCurrentLimitConfiguration(true, 35, 60, 0.1), 0.25, 0.0);
 
 		/* Drive Motor Characterization Values */
