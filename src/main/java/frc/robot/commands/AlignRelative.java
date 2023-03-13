@@ -6,9 +6,9 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.lib.util.Camera;
 import frc.robot.Constants.kSwerve;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Vision;
 
 public class AlignRelative extends CommandBase {
 	private final Swerve swerve;
@@ -40,7 +40,7 @@ public class AlignRelative extends CommandBase {
 
 	@Override
 	public void execute() {
-		Transform3d tagRelative = Camera.tags().get(tagId);
+		Transform3d tagRelative = Vision.tags().get(tagId);
 
 		if (tagRelative == null) {
 			isDone = true;

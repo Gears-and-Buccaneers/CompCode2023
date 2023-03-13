@@ -6,6 +6,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -15,15 +16,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kSwerve;
 
 public class Swerve extends SubsystemBase {
-	public SwerveDriveOdometry swerveOdometry;
-	public PigeonIMU gyro;
+	SwerveDrivePoseEstimator estimator;
+	PigeonIMU gyro = new PigeonIMU(kSwerve.pigeonID);
+	Vision vision = new Vision();
 
 	public Swerve() {
-		gyro = new PigeonIMU(kSwerve.pigeonID);
 		gyro.configFactoryDefault();
 		zeroGyro();
 
-		swerveOdometry = new SwerveDriveOdometry(kSwerve.swerveKinematics, getYaw(), getPos());
+		estimator = new SwerveDrivePoseEstimator(kSwerve.swerveKinematics, getYaw(), getPos());
 	}
 
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -52,11 +53,11 @@ public class Swerve extends SubsystemBase {
 	}
 
 	public Pose2d getPose() {
-		return swerveOdometry.getPoseMeters();
+		return estimator.getPoseMeters();
 	}
 
 	public void resetOdometry(Pose2d pose) {
-		swerveOdometry.resetPosition(getYaw(), getPos(), pose);
+		estimator.resetPosition(getYaw(), getPos(), pose);
 	}
 
 	public SwerveModulePosition[] getPos() {
@@ -87,7 +88,7 @@ public class Swerve extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		swerveOdometry.update(getYaw(), getPos());
+		estimator.update(getYaw(), getPos());
 
 		for (SwerveModule mod : kSwerve.mods) {
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Cancoder", mod.getEncoder());

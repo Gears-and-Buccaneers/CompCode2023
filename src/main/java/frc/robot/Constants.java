@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -14,10 +15,10 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
-import frc.lib.util.Camera;
 import frc.lib.util.LogitechController;
 import frc.lib.util.TalonConfig;
 import frc.robot.subsystems.SwerveModule;
+import frc.robot.subsystems.Vision;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.pathplanner.lib.PathConstraints;
@@ -35,16 +36,20 @@ public final class Constants {
 	}
 
 	public static final class kVision {
-		public static final Camera[] cameras = {
-				new Camera("leftCam", new Transform3d(
+		public static final Vision.Camera[] cameras = {
+				new Vision.Camera("leftCam", new Transform3d(
 						new Translation3d(0.5, 0.0, 0.5),
 						new Rotation3d(0, 0, 0))),
-				new Camera("rightCam", new Transform3d(
+				new Vision.Camera("rightCam", new Transform3d(
 						new Translation3d(0.5, 0.0, 0.5),
 						new Rotation3d(0, 0, 0)))
 		};
 
 		public static final double maxAmbiguity = 0.2;
+
+		public static final AprilTag[] tags = {
+			new AprilTag(0, null)
+		};
 
 		// Cam mounted facing forward, half a meter forward of center, half a meter up
 		// from center.
