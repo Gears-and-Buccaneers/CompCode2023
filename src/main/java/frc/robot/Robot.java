@@ -72,7 +72,8 @@ public class Robot extends TimedRobot {
 		chooser.addOption("drop (LOWER)->Go",
 				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM).andThen(SimpleAuto.go(swerve)));
 		chooser.addOption("drop->Go", SimpleAuto.dropPiece(arm, gripper, Level.TOP).andThen(SimpleAuto.go(swerve)));
-		chooser.addOption("Autobalance (UNTESTED)", SimpleAuto.autoBalanceUntested(swerve));
+		// chooser.addOption("Autobalance (UNTESTED)",
+		// SimpleAuto.autoBalanceUntested(swerve));
 
 		SmartDashboard.putData("Auto Path", chooser);
 	}
