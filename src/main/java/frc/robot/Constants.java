@@ -1,12 +1,13 @@
 package frc.robot;
 
 import java.io.File;
-import java.util.Map;
+import java.io.IOException;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -37,6 +38,17 @@ public final class Constants {
 	}
 
 	public static final class kVision {
+		public static AprilTagFieldLayout fieldLayout;
+
+		static {
+			try {
+				fieldLayout = AprilTagFieldLayout
+						.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+			} catch (IOException e) {
+				System.out.println(e);
+			}
+		}
+
 		public static final Vision.Camera[] cameras = {
 				// Cam mounted facing forward, half a meter forward of center, half a meter up
 				// from center.
@@ -51,9 +63,6 @@ public final class Constants {
 		};
 
 		public static final double maxAmbiguity = 0.2;
-
-		public static final Map<Integer, Pose3d> tags = Map.of(
-				0, new Pose3d());
 	}
 
 	public static final class kSwerve {
