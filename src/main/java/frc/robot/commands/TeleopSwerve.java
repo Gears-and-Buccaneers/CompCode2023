@@ -21,10 +21,9 @@ public class TeleopSwerve extends CommandBase {
 				new Translation2d(
 						Controls.driver.LS_Y.get(),
 						Controls.driver.LS_X.get()).times(Controls.driver.LT_S.get() > 0.5 ? 0.25 : 1),
-				Controls.driver.RS_X.get() * kSwerve.maxAngularVelocity,
+				(Controls.driver.LT_S.get() > 0.5 ? Controls.driver.RS_X.get() * .25 : Controls.driver.RS_X.get())
+						* kSwerve.maxAngularVelocity,
 				!Controls.driver.LB.getAsBoolean(),
 				kSwerve.openLoop);
 	}
 }
-
-

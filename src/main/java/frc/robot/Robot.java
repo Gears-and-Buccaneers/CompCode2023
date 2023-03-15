@@ -2,6 +2,11 @@ package frc.robot;
 
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -34,7 +39,10 @@ public class Robot extends TimedRobot {
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	private Command autonomousCommand;
-	PathPlannerAuto pathPlanner = new PathPlannerAuto(swerve);
+	// PathPlannerAuto pathPlanner = new PathPlannerAuto(swerve);
+
+	private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+	NetworkTable autoTab = inst.getTable("Auto");
 
 	@Override
 	public void robotInit() {
@@ -43,36 +51,27 @@ public class Robot extends TimedRobot {
 		// Configure the button bindings
 		Controls.driver.BACK.whileTrue(swerve.runOnce(swerve::zeroGyro));
 
-		Controls.driver.DOWN.onTrue(arm.setTo(Level.INTAKE));
-		Controls.driver.LEFT.onTrue(arm.setTo(Level.BOTTOM));
-		Controls.driver.UP.onTrue(arm.setTo(Level.MIDDLE));
-		Controls.driver.RIGHT.onTrue(arm.setTo(Level.TOP));
+		Controls.operator.DOWN.onTrue(arm.setTo(Level.INTAKE));
+		Controls.operator.LEFT.onTrue(arm.setTo(Level.BOTTOM));
+		Controls.operator.UP.onTrue(arm.setTo(Level.MIDDLE));
+		Controls.operator.RIGHT.onTrue(arm.setTo(Level.TOP));
 
-		Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
+		Controls.driver.RB.whileTrue(gripper.runOnce(gripper::toggle));
 
 		// Setup autos picker
 		chooser.setDefaultOption("None", null);
-
-		chooser.addOption("Coded Trajectory", new ExampleAuto(swerve));
-
-		chooser.addOption("Straight", pathPlanner.get("GO Straight"));
-		chooser.addOption("Testing", pathPlanner.get("PathPlanerSwerve"));
-
+		// chooser.addOption("Coded Trajectory", new ExampleAuto(swerve));
+		// chooser.addOption("Straight", pathPlanner.get("GO Straight"));
+		// chooser.addOption("Testing", pathPlanner.get("PathPlanerSwerve"));
 		chooser.addOption("Drop piece (TOP)", SimpleAuto.dropPiece(arm, gripper, Level.TOP));
-
 		chooser.addOption("Drop piece -> Auto-balance",
 				SimpleAuto.dropPiece(arm, gripper, Level.TOP).andThen(SimpleAuto.autoBalance(swerve)));
-
 		chooser.addOption("Drop piece (LOWER)", SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM));
-
 		chooser.addOption("Drop piece (LOWER) -> Auto-balance",
 				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM).andThen(SimpleAuto.autoBalance(swerve)));
-
 		chooser.addOption("drop (LOWER)->Go",
 				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM).andThen(SimpleAuto.go(swerve)));
-
 		chooser.addOption("drop->Go", SimpleAuto.dropPiece(arm, gripper, Level.TOP).andThen(SimpleAuto.go(swerve)));
-
 		chooser.addOption("Autobalance (UNTESTED)", SimpleAuto.autoBalanceUntested(swerve));
 
 		SmartDashboard.putData("Auto Path", chooser);
@@ -94,8 +93,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		autonomousCommand = chooser.getSelected();
-		if (autonomousCommand != null)
+		if (autonomousCommand != null) {
 			autonomousCommand.schedule();
+			// if (autonomousCommand)
+		}
 	}
 
 	@Override

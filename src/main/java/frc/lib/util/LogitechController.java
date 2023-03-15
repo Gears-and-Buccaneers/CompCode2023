@@ -5,10 +5,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public final class LogitechController {
-	public static final int yAxis = 1;
-	public static final int xAxis = 0;
-	public static final int rotAxis = 4;
-
 	private static final double deadband = 0.05;
 
 	public final Trigger A, B, X, Y, LB, RB, BACK, START, LT, RT, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT,

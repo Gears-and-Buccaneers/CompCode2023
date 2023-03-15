@@ -12,6 +12,15 @@ public class Conversions {
 	}
 
 	/**
+	 * @param counts    Falcon Counts
+	 * @param gearRatio Gear Ratio between Falcon and Mechanism
+	 * @return Degrees of Rotation of Mechanism
+	 */
+	public static double falconToMea(double counts, double gearRatio, double wheelDiameter) {
+		return counts * (2 * Math.PI / 2048.0) * gearRatio * wheelDiameter / 2;
+	}
+
+	/**
 	 * @param degrees   Degrees of rotation of Mechanism
 	 * @param gearRatio Gear Ratio between Falcon and Mechanism
 	 * @return Falcon Counts

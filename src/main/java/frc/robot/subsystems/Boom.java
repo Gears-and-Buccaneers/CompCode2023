@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 import frc.robot.Constants.kBoom;
-import frc.robot.Constants.Pneumatics;
 import frc.robot.Constants.kBoom.Level;
 
 public class Boom extends SubsystemBase {
@@ -25,7 +24,7 @@ public class Boom extends SubsystemBase {
 	Encoder encoder = new Encoder(2, 3);
 
 	DoubleSolenoid pneumatic = new DoubleSolenoid(
-			Pneumatics.compressorId, PneumaticsModuleType.CTREPCM,
+			0, PneumaticsModuleType.CTREPCM,
 			kBoom.forwardId, kBoom.reverseId);
 
 	boolean raised = pneumatic.get() == Value.kForward;
@@ -37,6 +36,7 @@ public class Boom extends SubsystemBase {
 	}
 
 	public CommandBase setTo(Level target) {
+		// CommandBase cmd = runOnce(() -> )
 		CommandBase cmd = this.runOnce(() -> pid.setSetpoint(target.getLength()))
 				.andThen(new WaitUntilCommand(pid::atSetpoint));
 

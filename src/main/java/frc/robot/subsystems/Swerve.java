@@ -32,7 +32,6 @@ public class Swerve extends SubsystemBase {
 
 		if (fieldRelative)
 			speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getYaw());
-
 		setModuleStates(kSwerve.swerveKinematics.toSwerveModuleStates(speeds), isOpenLoop);
 	}
 
@@ -41,10 +40,6 @@ public class Swerve extends SubsystemBase {
 
 		for (SwerveModule mod : kSwerve.mods)
 			mod.setDesiredState(desiredStates[mod.moduleNumber], openLoop);
-	}
-
-	public void setModuleStates(SwerveModuleState[] desiredStates) {
-		setModuleStates(desiredStates, true);
 	}
 
 	public void setToCurrent() {
@@ -101,6 +96,8 @@ public class Swerve extends SubsystemBase {
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Cancoder", mod.getEncoder());
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Integrated", mod.getIntegrated());
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Velocity", mod.getVelocity());
+			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " meter", mod.getMeter());
+
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Absolute Position", mod.getAbsolutePosition());
 		}
 	}

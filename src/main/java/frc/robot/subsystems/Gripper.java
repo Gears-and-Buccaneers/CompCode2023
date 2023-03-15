@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Gripper extends SubsystemBase {
-	public final DoubleSolenoid gripper = new DoubleSolenoid(Constants.Pneumatics.compressorId,
+	public final DoubleSolenoid gripper = new DoubleSolenoid(0,
 			PneumaticsModuleType.CTREPCM,
-			Constants.Gripper.forwardId, Constants.Gripper.reverseId);
+			Constants.kGripper.forwardId, Constants.kGripper.reverseId);
 
 	public void toggle() {
 		if (gripper.get() == Value.kReverse)

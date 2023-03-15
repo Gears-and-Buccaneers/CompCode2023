@@ -73,8 +73,8 @@ public final class Constants {
 		public static final double wheelDiameter = Units.inchesToMeters(3.94);
 		public static final double wheelCircumference = wheelDiameter * Math.PI;
 
-		public static final double driveGearRatio = 1 / 8.14; // 6.86:1
-		public static final double angleGearRatio = (150 / 7); // 12.8:1
+		public static final double driveGearRatio = 1 / 8.14; //
+		public static final double angleGearRatio = (150 / 7); //
 
 		/** Swerve angle motor configs */
 		public static final TalonConfig angleConfig = new TalonConfig(new PIDConstants(0.6, 0.0, 12.0), 0.0, true,
@@ -93,7 +93,7 @@ public final class Constants {
 		/* Swerve Profiling Values */
 		public static final double maxSpeed = 0.8; // meters per second
 		public static final double maxSpeedBoost = 4.5; // meters per second
-		public static final double maxAngularVelocity = 0.75;
+		public static final double maxAngularVelocity = 1.5;
 
 		/* Angle Encoder Invert */
 		public static final boolean canCoderInvert = false;
@@ -115,10 +115,6 @@ public final class Constants {
 				new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
 				new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0),
 				new Translation2d(-wheelBase / 2.0, trackWidth / 2.0));
-	}
-
-	public static final class Pneumatics {
-		public static final int compressorId = 0;
 	}
 
 	public static final class kBoom {
@@ -155,21 +151,21 @@ public final class Constants {
 		}
 	}
 
-	public static final class Gripper {
+	public static final class kGripper {
 		public static final int forwardId = 1;
 		public static final int reverseId = 2;
 	}
 
 	public static final class kAuto {
-		public static final PathConstraints constraints = new PathConstraints(.5, 3);
-		public static final PIDConstants translation = new PIDConstants(0.7, 0.0, 0.2);
-		public static final PIDConstants rotation = new PIDConstants(1.0, 0.0, 0.1);
+		public static final PathConstraints constraints = new PathConstraints(.5, .25);
+		public static final PIDConstants translation = new PIDConstants(0.7, 0.0, 0.02);
+		public static final PIDConstants rotation = new PIDConstants(.5, 0.0, 0.01);
 
 		public static final double kPXController = 1;
 		public static final double kPYController = 1;
 		public static final double kPThetaController = .1;
 
-		public static final TrajectoryConfig config = new TrajectoryConfig(3, 3)
+		public static final TrajectoryConfig config = new TrajectoryConfig(.5, .5)
 				.setKinematics(kSwerve.swerveKinematics);
 
 		// Constraint for the motion profilied robot angle controller

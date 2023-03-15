@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+//import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -10,7 +10,7 @@ import frc.lib.math.Conversions;
 import frc.robot.Constants.kSwerve;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
+//import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
@@ -24,10 +24,11 @@ public class SwerveModule {
 	public TalonFX angleMotor;
 	public TalonFX driveMotor;
 	private CANCoder angleEncoder;
-	// public double lastAngle;
+	public double lastAngle;
 	private double angleOffset;
 
-	private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.6716, 2.5913, 0.19321);
+	// private final SimpleMotorFeedforward feedforward = new
+	// SimpleMotorFeedforward(0.6716, 2.5913, 0.19321);
 
 	public SwerveModule(int moduleNumber, int driveMotorID, int angleMotorID, int canCoderID, double angleOffset) {
 		this.moduleNumber = moduleNumber;
@@ -40,7 +41,7 @@ public class SwerveModule {
 		angleMotor = kSwerve.angleConfig.create(angleMotorID);
 		driveMotor = kSwerve.driveConfig.create(driveMotorID);
 
-		// lastAngle = getIntegrated();
+		lastAngle = 1000;
 	}
 
 	public void setToCurrent() {
@@ -51,6 +52,8 @@ public class SwerveModule {
 		return getEncoder() - angleOffset;
 	}
 
+	public double percentOutput;
+
 	public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
 		desiredState = CTREModuleState.optimize(desiredState, Rotation2d.fromDegrees(getAbsolutePosition()));
 
@@ -59,13 +62,13 @@ public class SwerveModule {
 			driveMotor.set(ControlMode.PercentOutput, percentOutput);
 		} else {
 			// double referenceVelocity = desiredState.speedMetersPerSecond;
-			double arbFeedForward = feedforward.calculate(desiredState.speedMetersPerSecond) / kSwerve.nominalVoltage;
+			// double arbFeedForward =
+			// feedforward.calculate(desiredState.speedMetersPerSecond) /
+			// kSwerve.nominalVoltage;
 			driveMotor.set(
 					TalonFXControlMode.Velocity,
 					desiredState.speedMetersPerSecond
-							/ (Math.PI * kSwerve.wheelDiameter * kSwerve.driveGearRatio / 2048 * 10),
-					DemandType.ArbitraryFeedForward,
-					arbFeedForward);
+							/ (Math.PI * kSwerve.wheelDiameter * kSwerve.driveGearRatio / 2048 * 10));
 			// driveMotor.feed();
 		}
 
@@ -73,12 +76,12 @@ public class SwerveModule {
 
 		// Prevent rotating module if new angle is within 2 degrees of the last angle.
 		// Prevents Jittering.
-		// angle = Math.abs(lastAngle - angle) <= 2 ? lastAngle : angle;
+		angle = Math.abs(lastAngle - angle) <= 2 ? lastAngle : angle;
 
 		angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle,
 				kSwerve.angleGearRatio));
 
-		// lastAngle = angle;
+		lastAngle = angle;
 	}
 
 	private void configAngleEncoder() {
@@ -106,6 +109,10 @@ public class SwerveModule {
 	public double getVelocity() {
 		return Conversions.falconToMPS(driveMotor.getSelectedSensorVelocity(),
 				kSwerve.wheelCircumference, kSwerve.driveGearRatio);
+	}
+
+	public double getMeter() {
+		return percentOutput;
 	}
 
 	public SwerveModulePosition getPos() {
