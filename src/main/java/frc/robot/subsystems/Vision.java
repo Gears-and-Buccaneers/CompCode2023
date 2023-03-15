@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -115,14 +116,14 @@ public class Vision extends SubsystemBase {
 		}
 
 		public static Measurement from(PhotonTrackedTarget target) {
-			Pose3d targetPose = kVision.tags.get(target.getFiducialId());
+			Optional<Pose3d> targetPose = kVision.fieldLayout.getTagPose(target.getFiducialId());
 
-			if (targetPose == null)
+			if (targetPose.isEmpty())
 				return new Measurement();
 
 			Transform3d cameraToTarget = target.getBestCameraToTarget();
 
-			Pose3d cameraPose = targetPose.transformBy(cameraToTarget.inverse());
+			Pose3d cameraPose = targetPose.get().transformBy(cameraToTarget.inverse());
 
 			double a = kVision.maxAmbiguity - target.getPoseAmbiguity();
 
