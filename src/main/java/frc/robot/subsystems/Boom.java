@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -36,21 +37,16 @@ public class Boom extends SubsystemBase {
 	}
 
 	public CommandBase setTo(Level target) {
-		// CommandBase cmd = runOnce(() -> )
-		CommandBase cmd = this.runOnce(() -> pid.setSetpoint(target.getLength()))
-				.andThen(new WaitUntilCommand(pid::atSetpoint));
+		CommandBase extend = runOnce(() -> pid.setSetpoint(-1))
+				.andThen(new WaitCommand(0.1), runOnce(() -> rachetReleased = true)).unless(() -> rachetReleased)
+				.andThen(runOnce(() -> pid.setSetpoint(target.getLength())),
+						new WaitUntilCommand(pid::atSetpoint));
 
-		CommandBase r = runOnce(() -> pneumatic.set(target.isRaised() ? Value.kForward : Value.kReverse)).andThen(
-				new WaitCommand(kBoom.raiseDelay), runOnce(() -> raised = target.isRaised()));
+		CommandBase raise = runOnce(() -> pneumatic.set(target.isRaised() ? Value.kForward : Value.kReverse)).andThen(
+				new WaitCommand(kBoom.raiseDelay).unless(() -> raised == target.isRaised()),
+				runOnce(() -> raised = target.isRaised()));
 
-		cmd = target.isRaised() ? r.andThen(cmd) : cmd.andThen(r);
-
-		if (!rachetReleased) {
-			cmd = runOnce(() -> pid.setSetpoint(-1)).andThen(new WaitCommand(0.1), runOnce(() -> rachetReleased = true),
-					cmd);
-		}
-
-		return cmd;
+		return target.isRaised() ? raise.andThen(extend) : extend.andThen(raise);
 	}
 
 	public double getEncoder() {
