@@ -4,10 +4,10 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -16,15 +16,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kSwerve;
 
 public class Swerve extends SubsystemBase {
-	SwerveDrivePoseEstimator estimator;
-	PigeonIMU gyro = new PigeonIMU(kSwerve.pigeonID);
-	Vision vision = new Vision();
+	private final SwerveDrivePoseEstimator estimator;
+	private final PigeonIMU gyro = new PigeonIMU(kSwerve.pigeonID);
 
 	public Swerve() {
 		gyro.configFactoryDefault();
 		zeroGyro();
 
-		estimator = new SwerveDrivePoseEstimator(kSwerve.swerveKinematics, getYaw(), getPos());
+		Pose3d pose = Vision.getPose();
+
+		estimator = new SwerveDrivePoseEstimator(kSwerve.swerveKinematics, getYaw(), getPos(),
+				new Pose2d(pose.getX(), pose.getY(), new Rotation2d(pose.getZ())));
+
+		// Note: how does Java GC work? Will this be dropped?
+		new Vision(estimator);
 	}
 
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -53,7 +58,7 @@ public class Swerve extends SubsystemBase {
 	}
 
 	public Pose2d getPose() {
-		return estimator.getPoseMeters();
+		return estimator.getEstimatedPosition();
 	}
 
 	public void resetOdometry(Pose2d pose) {
