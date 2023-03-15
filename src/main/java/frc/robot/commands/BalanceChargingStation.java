@@ -27,6 +27,6 @@ public class BalanceChargingStation extends CommandBase {
 				new SwerveModuleState(speed, r)
 		};
 
-		swerve.setModuleStates(states);
+		swerve.setModuleStates(states, true);
 	}
 }

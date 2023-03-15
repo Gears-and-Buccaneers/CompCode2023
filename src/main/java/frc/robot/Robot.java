@@ -1,7 +1,5 @@
 package frc.robot;
 
-import org.photonvision.PhotonCamera;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -9,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Constants.Controls;
-import frc.robot.Constants.kVision;
 import frc.robot.Constants.kBoom.Level;
 
 import frc.robot.autos.*;
@@ -17,19 +14,12 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
 public class Robot extends TimedRobot {
-	// Cameras
-	private final PhotonCamera leftCamera = new PhotonCamera(kVision.leftCameraName);
-	private final PhotonCamera rightCamera = new PhotonCamera(kVision.rightCameraName);
-
 	// Subsystems
 	private final Swerve swerve = new Swerve();
 	private final Boom arm = new Boom();
 	private final Gripper gripper = new Gripper();
-	private final PoseEstimator poseEstimator = new PoseEstimator(leftCamera, swerve);
 
-	// Comands
-	private final VisionTest gotoTag = new VisionTest(swerve, rightCamera, leftCamera, poseEstimator, 4);
-
+	// Commands
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	private Command autonomousCommand;
 	PathPlannerAuto pathPlanner = new PathPlannerAuto(swerve);
@@ -46,7 +36,6 @@ public class Robot extends TimedRobot {
 		Controls.driver.UP.onTrue(arm.setTo(Level.MIDDLE));
 		Controls.driver.RIGHT.onTrue(arm.setTo(Level.TOP));
 
-		Controls.driver.X.whileTrue(gotoTag);
 		Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
 
 		// Setup autos picker

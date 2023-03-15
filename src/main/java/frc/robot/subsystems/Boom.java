@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 import frc.robot.Constants.kBoom;
-import frc.robot.Constants.Pneumatics;
+import frc.robot.Constants.kPneumatics;
 import frc.robot.Constants.kBoom.Level;
 
 public class Boom extends SubsystemBase {
@@ -25,7 +25,7 @@ public class Boom extends SubsystemBase {
 	Encoder encoder = new Encoder(2, 3);
 
 	DoubleSolenoid pneumatic = new DoubleSolenoid(
-			Pneumatics.compressorId, PneumaticsModuleType.CTREPCM,
+			kPneumatics.compressorId, PneumaticsModuleType.CTREPCM,
 			kBoom.forwardId, kBoom.reverseId);
 
 	boolean raised = pneumatic.get() == Value.kForward;

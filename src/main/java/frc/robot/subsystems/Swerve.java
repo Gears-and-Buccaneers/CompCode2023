@@ -25,7 +25,7 @@ public class Swerve extends SubsystemBase {
 
 		Pose3d pose = Vision.getPose();
 
-		estimator = new SwerveDrivePoseEstimator(kSwerve.swerveKinematics, getYaw(), getPos(),
+		estimator = new SwerveDrivePoseEstimator(kSwerve.kinematics, getYaw(), getModulePositions(),
 				new Pose2d(pose.getX(), pose.getY(), new Rotation2d(pose.getZ())));
 
 		// Note: how does Java GC work? Will this be dropped?
@@ -38,7 +38,7 @@ public class Swerve extends SubsystemBase {
 		if (fieldRelative)
 			speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getYaw());
 
-		setModuleStates(kSwerve.swerveKinematics.toSwerveModuleStates(speeds), isOpenLoop);
+		setModuleStates(kSwerve.kinematics.toSwerveModuleStates(speeds), isOpenLoop);
 	}
 
 	public void setModuleStates(SwerveModuleState[] desiredStates, boolean openLoop) {
@@ -48,24 +48,15 @@ public class Swerve extends SubsystemBase {
 			mod.setDesiredState(desiredStates[mod.moduleNumber], openLoop);
 	}
 
-	public void setModuleStates(SwerveModuleState[] desiredStates) {
-		setModuleStates(desiredStates, true);
-	}
-
-	public void setToCurrent() {
-		for (SwerveModule mod : kSwerve.mods)
-			mod.setToCurrent();
-	}
-
 	public Pose2d getPose() {
 		return estimator.getEstimatedPosition();
 	}
 
 	public void resetOdometry(Pose2d pose) {
-		estimator.resetPosition(getYaw(), getPos(), pose);
+		estimator.resetPosition(getYaw(), getModulePositions(), pose);
 	}
 
-	public SwerveModulePosition[] getPos() {
+	public SwerveModulePosition[] getModulePositions() {
 		SwerveModulePosition[] states = new SwerveModulePosition[4];
 		for (SwerveModule mod : kSwerve.mods)
 			states[mod.moduleNumber] = mod.getPos();
@@ -93,7 +84,7 @@ public class Swerve extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		estimator.update(getYaw(), getPos());
+		estimator.update(getYaw(), getModulePositions());
 
 		for (SwerveModule mod : kSwerve.mods) {
 			SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Cancoder", mod.getEncoder());

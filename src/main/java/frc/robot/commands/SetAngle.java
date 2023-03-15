@@ -23,6 +23,6 @@ public class SetAngle extends CommandBase {
 				new SwerveModuleState(0, r)
 		};
 
-		swerve.setModuleStates(states);
+		swerve.setModuleStates(states, true);
 	}
 }

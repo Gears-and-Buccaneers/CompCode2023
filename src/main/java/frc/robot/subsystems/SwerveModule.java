@@ -43,10 +43,6 @@ public class SwerveModule {
 		// lastAngle = getIntegrated();
 	}
 
-	public void setToCurrent() {
-		angleMotor.set(ControlMode.Position, angleMotor.getSelectedSensorPosition());
-	}
-
 	public double getAbsolutePosition() {
 		return getEncoder() - angleOffset;
 	}

@@ -5,9 +5,7 @@ import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -40,9 +38,13 @@ public final class Constants {
 
 	public static final class kVision {
 		public static final Vision.Camera[] cameras = {
+				// Cam mounted facing forward, half a meter forward of center, half a meter up
+				// from center.
 				new Vision.Camera("leftCam", new Transform3d(
 						new Translation3d(0.5, 0.0, 0.5),
 						new Rotation3d(0, 0, 0))),
+				// Cam mounted facing forward, half a meter forward of center, half a meter up
+				// from center.
 				new Vision.Camera("rightCam", new Transform3d(
 						new Translation3d(0.5, 0.0, 0.5),
 						new Rotation3d(0, 0, 0)))
@@ -52,18 +54,6 @@ public final class Constants {
 
 		public static final Map<Integer, Pose3d> tags = Map.of(
 				0, new Pose3d());
-
-		// Cam mounted facing forward, half a meter forward of center, half a meter up
-		// from center.
-		public static final String leftCameraName = "leftCam";
-		public static final Transform3d leftCamRelative = new Transform3d(new Translation3d(0.5, 0.0, 0.5),
-				new Rotation3d(0, 0, 0));
-
-		// Cam mounted facing forward, half a meter forward of center, half a meter up
-		// from center.
-		public static final String rightCameraName = "rightCam";
-		public static final Transform3d rightCamRelative = new Transform3d(new Translation3d(0.5, 0.0, 0.5),
-				new Rotation3d(0, 0, 0));
 	}
 
 	public static final class kSwerve {
@@ -117,14 +107,14 @@ public final class Constants {
 				new SwerveModule(3, 4, 8, 4, 187.6)
 		};
 
-		public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
+		public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 				new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
 				new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
 				new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0),
 				new Translation2d(-wheelBase / 2.0, trackWidth / 2.0));
 	}
 
-	public static final class Pneumatics {
+	public static final class kPneumatics {
 		public static final int compressorId = 0;
 	}
 
@@ -162,7 +152,7 @@ public final class Constants {
 		}
 	}
 
-	public static final class Gripper {
+	public static final class kGripper {
 		public static final int forwardId = 1;
 		public static final int reverseId = 2;
 	}
@@ -177,7 +167,7 @@ public final class Constants {
 		public static final double kPThetaController = .1;
 
 		public static final TrajectoryConfig config = new TrajectoryConfig(3, 3)
-				.setKinematics(kSwerve.swerveKinematics);
+				.setKinematics(kSwerve.kinematics);
 
 		// Constraint for the motion profilied robot angle controller
 		public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(

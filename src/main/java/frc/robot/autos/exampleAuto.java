@@ -35,15 +35,16 @@ public class ExampleAuto extends SequentialCommandGroup {
 		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
 				exampleTrajectory,
 				swerve::getPose,
-				kSwerve.swerveKinematics,
+				kSwerve.kinematics,
 				new PIDController(kAuto.kPXController, 0, 0),
 				new PIDController(kAuto.kPYController, 0, 0),
 				thetaController,
-				swerve::setModuleStates,
+				(states) -> swerve.setModuleStates(states, true),
 				swerve);
 
 		addCommands(
-				swerve.runOnce(() -> swerve.resetOdometry(exampleTrajectory.getInitialPose())),
+				// swerve.runOnce(() ->
+				// swerve.resetOdometry(exampleTrajectory.getInitialPose())),
 				swerveControllerCommand);
 	}
 }
