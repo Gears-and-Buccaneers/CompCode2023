@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.io.File;
+import java.util.HashMap;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -14,6 +15,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.lib.util.Camera;
 import frc.lib.util.LogitechController;
 import frc.lib.util.TalonConfig;
@@ -91,7 +94,7 @@ public final class Constants {
 				0.27 / 12);
 
 		/* Swerve Profiling Values */
-		public static final double maxSpeed = 0.8; // meters per second
+		public static final double maxSpeed = .8; // meters per second
 		public static final double maxSpeedBoost = 4.5; // meters per second
 		public static final double maxAngularVelocity = 1.5;
 
@@ -164,6 +167,13 @@ public final class Constants {
 		public static final double kPXController = 1;
 		public static final double kPYController = 1;
 		public static final double kPThetaController = .1;
+
+		// This is just an example event map. It would be better to have a constant,
+		// global event map in your code that will be used by all path following
+		// commands.
+		public static final HashMap<String, Command> testingAuto = new HashMap<String, Command>();// .put("marker1", new
+																									// PrintCommand("Passed
+																									// marker 1"));
 
 		public static final TrajectoryConfig config = new TrajectoryConfig(.5, .5)
 				.setKinematics(kSwerve.swerveKinematics);

@@ -27,8 +27,9 @@ public class SimpleAuto {
 	}
 
 	public static CommandBase go(Swerve swerve) {
-		return swerve.run(() -> swerve.drive(new Translation2d(-0.5, 0), 0, true, kSwerve.openLoop))
-				.withTimeout(2.1);
+		return swerve.run(() -> swerve.drive(new Translation2d(-0.5, 0), 0.0, true, kSwerve.openLoop))
+				.withTimeout(
+						2.5);
 	}
 
 }

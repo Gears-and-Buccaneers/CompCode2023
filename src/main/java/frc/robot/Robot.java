@@ -39,10 +39,10 @@ public class Robot extends TimedRobot {
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	private Command autonomousCommand;
-	// PathPlannerAuto pathPlanner = new PathPlannerAuto(swerve);
+	PathPlannerAuto pathPlanner = new PathPlannerAuto();
 
-	private NetworkTableInstance inst = NetworkTableInstance.getDefault();
-	NetworkTable autoTab = inst.getTable("Auto");
+	// private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+	// NetworkTable autoTab = inst.getTable("Auto");
 
 	@Override
 	public void robotInit() {
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
 		// Setup autos picker
 		chooser.setDefaultOption("None", null);
 		// chooser.addOption("Coded Trajectory", new ExampleAuto(swerve));
-		// chooser.addOption("Straight", pathPlanner.get("GO Straight"));
+		chooser.addOption("Straight", pathPlanner.get("GO Straight", swerve, Constants.kAuto.testingAuto));
 		// chooser.addOption("Testing", pathPlanner.get("PathPlanerSwerve"));
 		chooser.addOption("Drop piece (TOP)", SimpleAuto.dropPiece(arm, gripper, Level.TOP));
 		chooser.addOption("Drop piece -> Auto-balance",
@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
 		chooser.addOption("drop (LOWER)->Go",
 				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM).andThen(SimpleAuto.go(swerve)));
 		chooser.addOption("drop->Go", SimpleAuto.dropPiece(arm, gripper, Level.TOP).andThen(SimpleAuto.go(swerve)));
+		chooser.addOption("drop->Go111", SimpleAuto.go(swerve));
 		// chooser.addOption("Autobalance (UNTESTED)",
 		// SimpleAuto.autoBalanceUntested(swerve));
 
