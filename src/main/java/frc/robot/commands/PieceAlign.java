@@ -7,6 +7,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.kSwerve;
+import frc.robot.Constants.kVision;
 import frc.robot.subsystems.Swerve;
 
 public class PieceAlign extends CommandBase {
@@ -16,7 +17,11 @@ public class PieceAlign extends CommandBase {
 	private final PIDController yController = new PIDController(3, 0, 3);
 	private final PIDController rController = new PIDController(2, 0, 0);
 
-	private final DoubleSubscriber conePos = NetworkTableInstance.getDefault().getDoubleTopic("vision/conePos")
+	private final DoubleSubscriber coneX = NetworkTableInstance.getDefault().getDoubleTopic("vision/coneX")
+			.subscribe(0);
+	private final DoubleSubscriber coneY = NetworkTableInstance.getDefault().getDoubleTopic("vision/coneY")
+			.subscribe(0);
+	private final DoubleSubscriber coneCenter = NetworkTableInstance.getDefault().getDoubleTopic("vision/coneCenter")
 			.subscribe(0);
 
 	public PieceAlign(Swerve swerve) {
@@ -24,28 +29,23 @@ public class PieceAlign extends CommandBase {
 
 		SmartDashboard.putData("pieceAlign rotation-controller", rController);
 
-		// xController.setSetpoint(target.getX());
-		// yController.setSetpoint(target.getY());
-		rController.setSetpoint(0);
+		xController.setSetpoint(0.5);
+		yController.setSetpoint(kVision.desiredConeY);
+		rController.setSetpoint(0.5);
 
-		// xController.setTolerance(0.2);
-		// yController.setTolerance(0.2);
+		xController.setTolerance(0.05);
+		yController.setTolerance(0.05);
 		rController.setTolerance(0.05);
-
-		rController.enableContinuousInput(-1, 1);
 
 		addRequirements(swerve);
 	}
 
 	@Override
 	public void execute() {
-		// Pose2d current = swerve.getPose();
-
-		swerve.drive(new Translation2d(/*
-																		 * xController.calculate(current.getX()),
-																		 * yController.calculate(current.getY())
-																		 */),
-				rController.calculate(conePos.get()), true, kSwerve.openLoop);
+		swerve.drive(new Translation2d(
+		// xController.calculate(coneCenter.get()),
+		// yController.calculate(coneY.get())
+		), rController.calculate(coneX.get()), false, kSwerve.openLoop);
 	}
 
 	@Override

@@ -63,6 +63,8 @@ public final class Constants {
 		};
 
 		public static final double maxAmbiguity = 0.2;
+
+		public static final double desiredConeY = 0.5;
 	}
 
 	public static final class kSwerve {
