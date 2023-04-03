@@ -1,5 +1,12 @@
 {
   "HALProvider": {
+    "Other Devices": {
+      "Compressor[0]": {
+        "header": {
+          "open": true
+        }
+      }
+    },
     "RoboRIO": {
       "6V Rail": {
         "open": true
@@ -16,6 +23,7 @@
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/SmartDashboard/Auto Path": "String Chooser",
+      "/SmartDashboard/Autobalance PID": "PIDController",
       "/SmartDashboard/SendableChooser[0]": "String Chooser"
     },
     "windows": {
@@ -27,15 +35,21 @@
     }
   },
   "NetworkTables": {
+    "retained": {
+      "MyUi": {
+        "Grid": {
+          "open": true
+        },
+        "arm": {
+          "open": true
+        }
+      }
+    },
     "transitory": {
-      "FMSInfo": {
-        "open": true
-      },
       "LiveWindow": {
         ".status": {
           "open": true
-        },
-        "open": true
+        }
       },
       "Shuffleboard": {
         "open": true
@@ -44,7 +58,19 @@
         "Auto Path": {
           "open": true
         },
+        "Autobalance PID": {
+          "open": true
+        },
         "open": true
+      },
+      "photonvision": {
+        "leftCam": {
+          "open": true
+        },
+        "open": true,
+        "rightCam": {
+          "open": true
+        }
       }
     }
   },
@@ -58,6 +84,15 @@
     "NT3@127.0.0.1:60208": {
       "open": true
     },
+    "NT3@127.0.0.1:62213": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
+      "open": true
+    },
     "Server": {
       "Publishers": {
         "open": true
@@ -68,6 +103,12 @@
       "open": true
     },
     "shuffleboard": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
       "open": true
     },
     "visible": true
