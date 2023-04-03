@@ -23,8 +23,10 @@ import frc.robot.commands.*;
 
 public class Robot extends TimedRobot {
 	// Cameras
-	private final PhotonCamera leftCamera = new PhotonCamera(kVision.leftCameraName);
-	private final PhotonCamera rightCamera = new PhotonCamera(kVision.rightCameraName);
+	// private final PhotonCamera leftCamera = new
+	// PhotonCamera(kVision.leftCameraName);
+	// private final PhotonCamera rightCamera = new
+	// PhotonCamera(kVision.rightCameraName);
 
 	// Subsystems
 	private final Swerve swerve = new Swerve();
@@ -34,15 +36,14 @@ public class Robot extends TimedRobot {
 	// swerve);
 
 	// Commands
-	// private final VisionTest gotoTag = new VisionTest(swerve, rightCamera,
-	// leftCamera, poseEstimator, 4);
 
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	// Autos
+	private SendableChooser<Command> chooser = new SendableChooser<>();
 	private Command autonomousCommand;
-	PathPlannerAuto pathPlanner = new PathPlannerAuto();
 
-	// private NetworkTableInstance inst = NetworkTableInstance.getDefault();
-	// NetworkTable autoTab = inst.getTable("Auto");
+	// PathPlannerAuto pathPlanner = new PathPlannerAuto();
+
+	private Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
 	@Override
 	public void robotInit() {
@@ -58,23 +59,42 @@ public class Robot extends TimedRobot {
 
 		Controls.driver.RB.whileTrue(gripper.runOnce(gripper::toggle));
 
+		compressor.enableDigital();
+
+		makeAutos();
+	}
+
+	public void makeAutos() {
 		// Setup autos picker
 		chooser.setDefaultOption("None", null);
-		// chooser.addOption("Coded Trajectory", new ExampleAuto(swerve));
-		chooser.addOption("Straight", pathPlanner.get("GO Straight", swerve, Constants.kAuto.testingAuto));
-		// chooser.addOption("Testing", pathPlanner.get("PathPlanerSwerve"));
-		chooser.addOption("Drop piece (TOP)", SimpleAuto.dropPiece(arm, gripper, Level.TOP));
-		chooser.addOption("Drop piece -> Auto-balance",
+
+		// drop pice
+		chooser.addOption("Drop piece (Top)",
+				SimpleAuto.dropPiece(arm, gripper, Level.TOP));
+		chooser.addOption("Drop piece (Mid)",
+				SimpleAuto.dropPiece(arm, gripper, Level.MIDDLE));
+		chooser.addOption("Drop piece (Bot)",
+				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM));
+
+		// drop pice then balance
+		chooser.addOption("Drop piece (TOP) -> Auto-balance",
 				SimpleAuto.dropPiece(arm, gripper, Level.TOP).andThen(SimpleAuto.autoBalance(swerve)));
-		chooser.addOption("Drop piece (LOWER)", SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM));
-		chooser.addOption("Drop piece (LOWER) -> Auto-balance",
+		chooser.addOption("Drop piece (Mid) -> Auto-balance",
+				SimpleAuto.dropPiece(arm, gripper, Level.MIDDLE).andThen(SimpleAuto.autoBalance(swerve)));
+		chooser.addOption("Drop piece (Bot) -> Auto-balance",
 				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM).andThen(SimpleAuto.autoBalance(swerve)));
-		chooser.addOption("drop (LOWER)->Go",
-				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM).andThen(SimpleAuto.go(swerve)));
-		chooser.addOption("drop->Go", SimpleAuto.dropPiece(arm, gripper, Level.TOP).andThen(SimpleAuto.go(swerve)));
-		chooser.addOption("drop->Go111", SimpleAuto.go(swerve));
-		// chooser.addOption("Autobalance (UNTESTED)",
-		// SimpleAuto.autoBalanceUntested(swerve));
+
+		// Drop Pice and the MOBILITY
+		chooser.addOption("drop (Top)-> MOBILITY",
+				SimpleAuto.dropPiece(arm, gripper, Level.TOP).andThen(SimpleAuto.Mobilty(swerve)));
+		chooser.addOption("drop (Mid)-> MOBILITY",
+				SimpleAuto.dropPiece(arm, gripper, Level.MIDDLE).andThen(SimpleAuto.Mobilty(swerve)));
+		chooser.addOption("drop (Bot)-> MOBILITY",
+				SimpleAuto.dropPiece(arm, gripper, Level.BOTTOM).andThen(SimpleAuto.Mobilty(swerve)));
+
+		// Mobilty
+		chooser.addOption("MOBILITY",
+				SimpleAuto.Mobilty(swerve));
 
 		SmartDashboard.putData("Auto Path", chooser);
 	}
@@ -86,6 +106,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledInit() {
+		SimpleAuto.lockIn(swerve).schedule(); // this should lock in the robot whenever it is disabled
+		compressor.disable(); // turns off the compressor
 	}
 
 	@Override
@@ -97,7 +119,6 @@ public class Robot extends TimedRobot {
 		autonomousCommand = chooser.getSelected();
 		if (autonomousCommand != null) {
 			autonomousCommand.schedule();
-			// if (autonomousCommand)
 		}
 	}
 
@@ -119,6 +140,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testInit() {
 		CommandScheduler.getInstance().cancelAll();
+		compressor.enableDigital();
 	}
 
 	@Override

@@ -15,14 +15,13 @@ public class AutoBalance extends CommandBase {
 	public AutoBalance(Swerve subsys) {
 		swerve = subsys;
 		pid.setTolerance(1, 1);
-		pid.enableContinuousInput(-180, 180);
+		// pid.enableContinuousInput(-180, 180); // i think this harms us.
 		SmartDashboard.putData("Autobalance PID", pid);
 		addRequirements(swerve);
 	}
 
 	public void execute() {
-		double speed = pid.calculate(MathUtil.inputModulus(swerve.getPitch().getDegrees(),
-				-180, 180));
+		double speed = pid.calculate(MathUtil.inputModulus(swerve.getPitch().getDegrees(), -180, 180));
 
 		swerve.drive(new Translation2d(speed * 0.05, 0), 0, false, kSwerve.openLoop);
 	}

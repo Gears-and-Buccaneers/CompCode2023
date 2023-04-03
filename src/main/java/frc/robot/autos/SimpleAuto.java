@@ -12,21 +12,38 @@ import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Swerve;
 
 public class SimpleAuto {
-	public static CommandBase dropPiece(Boom arm, Gripper gripper, Level level) {
-		return arm.setTo(Level.INTAKE).andThen(arm.setTo(level), gripper.runOnce(gripper::toggle),
-				new WaitCommand(1), gripper.runOnce(gripper::toggle), new WaitCommand(1), arm.setTo(Level.BOTTOM));
+	public static CommandBase dropPiece(Boom boom, Gripper gripper, Level level) {
+		return boom.setTo(Level.INTAKE).andThen(
+				boom.setTo(level),
+				gripper.runOnce(gripper::toggle),
+				new WaitCommand(.5),
+				gripper.runOnce(gripper::toggle),
+				new WaitCommand(.5),
+				boom.setTo(Level.BOTTOM));
 	}
 
 	public static CommandBase autoBalance(Swerve swerve) {
-		return swerve.run(() -> swerve.drive(new Translation2d(-0.25, 0), 0, true, kSwerve.openLoop))
-				.until(() -> Math.abs(MathUtil.inputModulus(swerve.getPitch().getDegrees(), -180, 180)) > 2)
-				.andThen(new AutoBalance(swerve), swerve.runOnce(() -> {
-					swerve.drive(new Translation2d(), 0.01, true, false);
-					swerve.drive(new Translation2d(), 0, true, false);
-				}));
+		return swerve.run(
+				() -> swerve.drive(
+						new Translation2d(-0.25, 0), 0, true, kSwerve.openLoop)) // drives backward at 25% speed
+				.until(
+						() -> Math.abs(MathUtil.inputModulus(swerve.getPitch().getDegrees(), -180, 180)) > 2)
+				// need to add stop after 2 seconds of runint command
+				/* drives until gro angle more than 2 degrese */
+				.andThen(
+						new AutoBalance(swerve), // then it runs the serve auto balace wich makes the robot leval
+						lockIn(swerve) // then locks in the robot
+				);
 	}
 
-	public static CommandBase go(Swerve swerve) {
+	public static CommandBase lockIn(Swerve swerve) {
+		return swerve.runOnce(() -> { // locks the robot in so it cant move.
+			swerve.drive(new Translation2d(), 0.01, true, true);
+			swerve.drive(new Translation2d(), 0, true, true);
+		});
+	}
+
+	public static CommandBase Mobilty(Swerve swerve) {
 		return swerve.run(() -> swerve.drive(new Translation2d(-0.5, 0), 0.0, true, kSwerve.openLoop))
 				.withTimeout(
 						2.5);
