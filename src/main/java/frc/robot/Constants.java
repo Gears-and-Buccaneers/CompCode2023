@@ -15,10 +15,12 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.Camera;
 import frc.lib.util.LogitechController;
 import frc.lib.util.TalonConfig;
+import frc.lib.util.XboxControllerClass;
 import frc.robot.subsystems.SwerveModule;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -32,8 +34,29 @@ public final class Constants {
 	}
 
 	public static final class Controls {
-		public static final LogitechController driver = new LogitechController(0);
+		public static final XboxControllerClass driver = new XboxControllerClass(0);
 		public static final LogitechController operator = new LogitechController(1);
+
+		// public enum Controller {
+		// Xbox(0, true), // 10.825, 11.25, 11.25
+		// Logitech(4, true), // 24, 25.825, 23.25, 26 / 12, 23.25, 26.75
+
+		// private final double length;
+		// private final boolean raised;
+
+		// private Level(double length, boolean raised) {
+		// this.length = length;
+		// this.raised = raised;
+		// }
+
+		// public double getType() {
+		// return length;
+		// }
+
+		// public boolean isRaised() {
+		// return raised;
+		// }
+		// }
 	}
 
 	public static final class kVision {

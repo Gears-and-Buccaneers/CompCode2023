@@ -30,29 +30,36 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		// INITIALIZATION
 		swerve.setDefaultCommand(new TeleopSwerve(swerve));
-		CameraServer.startAutomaticCapture();
+		// CameraServer.startAutomaticCapture();
 		SmartDashboard.putData(CommandScheduler.getInstance());
 
 		// CONTROLS
-		SmartDashboard.putData("zero gyro", swerve.run(swerve::zeroGyro));
-		SmartDashboard.putData("zero Boom encoder", boom.runOnce(boom::zeroEncoder));
+		// SmartDashboard.putData("zero gyro", swerve.run(swerve::zeroGyro));
+		// SmartDashboard.putData("zero Boom encoder", boom.runOnce(boom::zeroEncoder));
 
 		Controls.driver.BACK.whileTrue(swerve.runOnce(swerve::zeroGyro));
 		Controls.driver.RB.whileTrue(gripper.runOnce(gripper::toggle));
+		Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
 
 		Controls.operator.DOWN.onTrue(boom.setTo(Level.INTAKE));
 		Controls.operator.LEFT.onTrue(boom.setTo(Level.BOTTOM));
 		Controls.operator.UP.onTrue(boom.setTo(Level.MIDDLE));
 		Controls.operator.RIGHT.onTrue(boom.setTo(Level.TOP));
 
+		Controls.operator.A.onTrue(boom.setTo(Level.INTAKE));
+		Controls.operator.X.onTrue(boom.setTo(Level.BOTTOM));
+		Controls.operator.Y.onTrue(boom.setTo(Level.MIDDLE));
+		Controls.operator.B.onTrue(boom.setTo(Level.TOP));
+
 		// AUTOS
-		chooser1.setDefaultOption("None", new InstantCommand());
+		chooser1.setDefaultOption("Bottom",
+				SimpleAuto.dropPiece(boom, gripper, Level.BOTTOM));
 		chooser1.addOption("Top",
 				SimpleAuto.dropPiece(boom, gripper, Level.TOP));
 		chooser1.addOption("Middle",
 				SimpleAuto.dropPiece(boom, gripper, Level.MIDDLE));
-		chooser1.addOption("Bottom",
-				SimpleAuto.dropPiece(boom, gripper, Level.BOTTOM));
+		chooser1.addOption("None",
+				new InstantCommand());
 
 		SmartDashboard.putData("Drop piece:", chooser1);
 
@@ -61,7 +68,7 @@ public class Robot extends TimedRobot {
 				SimpleAuto.autoBalance(swerve));
 		chooser2.addOption("Exit community (BOT MUST NOT BE BEHIND CHARGING STATION)",
 				SimpleAuto.exitCommunity(swerve));
-		SmartDashboard.putData("Auto action", chooser2);
+		SmartDashboard.putData("Auto move action", chooser2);
 	}
 
 	@Override
