@@ -28,8 +28,7 @@ public class SimpleAuto {
 						new Translation2d(-0.25, 0), 0, true, kSwerve.openLoop)) // drives backward at 25% speed
 				.until(
 						() -> Math.abs(MathUtil.inputModulus(swerve.getPitch().getDegrees(), -180, 180)) > 2)
-				// need to add stop after 2 seconds of runint command
-				/* drives until gro angle more than 2 degrese */
+				.withTimeout(2)
 				.andThen(
 						new AutoBalance(swerve), // then it runs the serve auto balace wich makes the robot leval
 						lockIn(swerve) // then locks in the robot
@@ -43,7 +42,7 @@ public class SimpleAuto {
 		});
 	}
 
-	public static CommandBase Mobilty(Swerve swerve) {
+	public static CommandBase exitCommunity(Swerve swerve) {
 		return swerve.run(() -> swerve.drive(new Translation2d(-0.5, 0), 0.0, true, kSwerve.openLoop))
 				.withTimeout(
 						2.5);

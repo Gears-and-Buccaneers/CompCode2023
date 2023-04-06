@@ -51,6 +51,10 @@ public class Boom extends SubsystemBase {
 		return (double) encoder.get() / 2048.0;
 	}
 
+	public void zeroEncoder() {
+		encoder.reset();
+	}
+
 	public void periodic() {
 		double output = -pid.calculate(getEncoder());
 		output = Math.abs(output) > 0.8 ? output / Math.abs(output) * 0.8 : output;

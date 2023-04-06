@@ -16,7 +16,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.lib.util.Camera;
 import frc.lib.util.LogitechController;
 import frc.lib.util.TalonConfig;
@@ -133,7 +132,7 @@ public final class Constants {
 		public enum Level {
 			BOTTOM(0, true), // 10.825, 11.25, 11.25
 			MIDDLE(4, true), // 24, 25.825, 23.25, 26 / 12, 23.25, 26.75
-			TOP(8, true), // 37.75, 37.5, 38.75
+			TOP(9, true), // 37.75, 37.5, 38.75
 			INTAKE(0, false);
 
 			private final double length;

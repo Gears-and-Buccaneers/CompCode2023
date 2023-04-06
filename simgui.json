@@ -1,5 +1,15 @@
 {
   "HALProvider": {
+    "Encoders": {
+      "0": {
+        "header": {
+          "open": true
+        }
+      },
+      "window": {
+        "visible": true
+      }
+    },
     "Other Devices": {
       "Compressor[0]": {
         "header": {
@@ -8,13 +18,20 @@
       }
     },
     "RoboRIO": {
+      "3.3V Rail": {
+        "open": true
+      },
+      "5V Rail": {
+        "open": true
+      },
       "6V Rail": {
         "open": true
-      }
-    },
-    "Timing": {
+      },
+      "RoboRIO Input": {
+        "open": true
+      },
       "window": {
-        "visible": false
+        "visible": true
       }
     }
   },
@@ -24,7 +41,11 @@
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/SmartDashboard/Auto Path": "String Chooser",
       "/SmartDashboard/Autobalance PID": "PIDController",
-      "/SmartDashboard/SendableChooser[0]": "String Chooser"
+      "/SmartDashboard/InstantCommand": "Command",
+      "/SmartDashboard/Scheduler": "Scheduler",
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/zero Boom encoder": "Command",
+      "/SmartDashboard/zero gyro": "Command"
     },
     "windows": {
       "/FMSInfo": {
@@ -49,7 +70,8 @@
       "LiveWindow": {
         ".status": {
           "open": true
-        }
+        },
+        "open": true
       },
       "Shuffleboard": {
         "open": true
@@ -112,5 +134,14 @@
       "open": true
     },
     "visible": true
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "height": 338
+        }
+      ]
+    }
   }
 }

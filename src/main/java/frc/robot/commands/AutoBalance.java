@@ -14,6 +14,8 @@ public class AutoBalance extends CommandBase {
 
 	public AutoBalance(Swerve subsys) {
 		swerve = subsys;
+
+		pid.setSetpoint(0);
 		pid.setTolerance(1, 1);
 		// pid.enableContinuousInput(-180, 180); // i think this harms us.
 		SmartDashboard.putData("Autobalance PID", pid);
