@@ -14,6 +14,7 @@ import frc.robot.subsystems.Swerve;
 public class SimpleAuto {
 	public static CommandBase dropPiece(Boom boom, Gripper gripper, Level level) {
 		return boom.setTo(Level.INTAKE).andThen(
+				new WaitCommand(.2),
 				boom.setTo(level),
 				gripper.runOnce(gripper::toggle),
 				new WaitCommand(.5),
