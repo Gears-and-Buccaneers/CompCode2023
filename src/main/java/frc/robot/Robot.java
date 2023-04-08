@@ -1,6 +1,6 @@
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
+// import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -40,6 +40,8 @@ public class Robot extends TimedRobot {
 		Controls.driver.BACK.whileTrue(swerve.runOnce(swerve::zeroGyro));
 		Controls.driver.RB.whileTrue(gripper.runOnce(gripper::toggle));
 		Controls.driver.Y.whileTrue(gripper.runOnce(gripper::toggle));
+
+		Controls.driver.A.whileTrue(SimpleAuto.autoBalance(swerve));
 
 		Controls.operator.DOWN.onTrue(boom.setTo(Level.INTAKE));
 		Controls.operator.LEFT.onTrue(boom.setTo(Level.BOTTOM));
@@ -111,7 +113,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testInit() {
 		CommandScheduler.getInstance().cancelAll();
-		// compressor.enableDigital();
 	}
 
 	@Override

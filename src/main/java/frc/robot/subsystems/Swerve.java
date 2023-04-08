@@ -21,7 +21,8 @@ public class Swerve extends SubsystemBase {
 
 	public Swerve() {
 		gyro = new PigeonIMU(kSwerve.pigeonID);
-		gyro.configFactoryDefault();
+		System.err.println(gyro.configFactoryDefault());
+
 		offsetGyro(180);
 
 		swerveOdometry = new SwerveDriveOdometry(kSwerve.swerveKinematics, getYaw(), getPos());

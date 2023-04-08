@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.Camera;
 import frc.lib.util.LogitechController;
 import frc.lib.util.TalonConfig;
-import frc.lib.util.XboxControllerClass;
 import frc.robot.subsystems.SwerveModule;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -34,7 +33,7 @@ public final class Constants {
 	}
 
 	public static final class Controls {
-		public static final XboxControllerClass driver = new XboxControllerClass(0);
+		public static final LogitechController driver = new LogitechController(0);
 		public static final LogitechController operator = new LogitechController(1);
 
 		// public enum Controller {
