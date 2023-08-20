@@ -80,24 +80,26 @@ public class SimpleAuto {
 						}));
 	}
 
-	public static CommandBase balanceStep2(Swerve swerve) {
-		ShuffleboardTab config = Shuffleboard.getTab("Autos");
+	// public static CommandBase balanceStep2(Swerve swerve) {
+	// ShuffleboardTab config = Shuffleboard.getTab("Autos");
 
-		double last = 0;
+	// double last = 0;
 
-		GenericEntry target = config.add("Step-balance pitch threshold", 3.0).getEntry();
-		GenericEntry speed = config.add("Step-balance speed", 0.025).getEntry();
+	// GenericEntry target = config.add("Step-balance pitch threshold",
+	// 3.0).getEntry();
+	// GenericEntry speed = config.add("Step-balance speed", 0.025).getEntry();
 
-		return swerve.run(() -> last = swerve.getPitch().getDegrees())
-				.andThen(
-						() -> swerve.drive(new Translation2d(speed.getDouble(0.01), 0), 0, false, kSwerve.openLoop)
-								.until(),
-						lockIn(swerve),
-						new WaitCommand(waitTime.getDouble(0.2)),
-						swerve.run(() -> {
-							if (Math.abs(swerve.getPitch().getDegrees()) <= target.getDouble(3.0))
-								balanceStep(swerve).schedule();
-						}));
-	}
+	// return swerve.run(() -> last = swerve.getPitch().getDegrees())
+	// .andThen(
+	// () -> swerve.drive(new Translation2d(speed.getDouble(0.01), 0), 0, false,
+	// kSwerve.openLoop)
+	// .until(),
+	// lockIn(swerve),
+	// new WaitCommand(waitTime.getDouble(0.2)),
+	// swerve.run(() -> {
+	// if (Math.abs(swerve.getPitch().getDegrees()) <= target.getDouble(3.0))
+	// balanceStep(swerve).schedule();
+	// }));
+	// }
 
 }
