@@ -16,7 +16,7 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
 public class Robot extends TimedRobot {
-	// SUBSYSTEMS
+	// robot SUBSYSTEMS
 	private final Swerve swerve = new Swerve();
 	private final Boom boom = new Boom();
 	private final Gripper gripper = new Gripper();
