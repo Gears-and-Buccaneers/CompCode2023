@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   test:
-    name: deploy to staging
+    name: unit Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
